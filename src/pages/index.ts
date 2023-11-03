@@ -1,1 +1,2 @@
-export * from './home'
+export * from './Home'
+export * from './Auth'

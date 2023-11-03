@@ -18,9 +18,9 @@ export const theme = extendTheme({
 
 	colors: {
 		main: {
-			principal: '#F29325',
-			background: '#F3F3F3',
-			text: '#222222',
+			principal: '#3ba4b1',
+			background: '#101018',
+			text: '#F3F3F3',
 			sideBar: '#333333'
 		}
 	},

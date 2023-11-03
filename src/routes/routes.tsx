@@ -2,6 +2,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
 import { Home } from '../pages'
 import { BaseLayoutHomePage } from '../pages/BaseLayoutHomePage'
+import { Auth } from '../pages/Auth'
+import { ROUTE_LOGIN } from '../shared/utils/constants'
 
 export const AppRoute = () => {
 	const router = createBrowserRouter([
@@ -15,6 +17,10 @@ export const AppRoute = () => {
 			errorElement: (
 				<h1>Página de erro</h1>
 			),
+		},
+		{
+			path: ROUTE_LOGIN.route,
+			element: <Auth />,
 		},
 	])
 
