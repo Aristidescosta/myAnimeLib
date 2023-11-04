@@ -28,13 +28,12 @@ export const Home: React.FC = () => {
 		const res = await fetch(url);
 		const data = await res.json();
 		//Pegando o featured
-		let i = 0;
+
 		while (REQUEST.length < 4) {
 			const RANDOM_CHOISE = Math.floor(Math.random() * (data.data.length - 1));
 			const choice = data.data[RANDOM_CHOISE];
 			if (!REQUEST.includes(choice)) {
 				REQUEST.push(choice);
-				i++;
 			}
 		}
 		setRequest(REQUEST);

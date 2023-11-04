@@ -3,6 +3,7 @@ import {
 	Box,
 	Button,
 	Flex,
+	FormControl,
 	HStack,
 	Input,
 	InputGroup,
@@ -14,14 +15,14 @@ import {
 	Text,
 	useBreakpointValue,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
 import { APP_VARIANT_COLOR } from "../../utils/constants";
-/* import { APP_COLOR } from '../../utils/constants' */
+import { Field, Form, Formik } from "formik";
 
 interface IHeader {
 	navbar: TNavbarItem[];
@@ -31,6 +32,18 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 	const isBase = useBreakpointValue({ base: true, md: true, lg: false });
 	const user = getData(StorageEnum.Login);
 	const username = user ? user.split("@")[0] : null;
+
+	const [search, setSearch] = useState("");
+	const navigate = useNavigate();
+	const handleSubmit = () => {
+		/* e.preventDefault(); */
+		if (!search) return;
+		navigate(`/search?q=${search}`);
+		setSearch("");
+	};
+
+	console.log(search)
+
 	return (
 		<Box>
 			<Box
@@ -47,15 +60,19 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 				</Box>
 				<NavigationBar items={navbar} isBase={isBase || false} />
 				<HStack display={"flex"} justify={"space-between"}>
-					<InputGroup>
-						<InputRightElement pointerEvents={"none"}>
-							<SearchIcon color={"grey.300"} />
-						</InputRightElement>
-						<Input
-							type="search"
-							placeholder="Pesquise por um anime, mangá ou personagem"
-						/>
-					</InputGroup>
+					<FormControl>
+						<InputGroup>
+							<InputRightElement pointerEvents={"none"}>
+								<SearchIcon color={"grey.300"} />
+							</InputRightElement>
+							<Input
+								type="search"
+								placeholder="Pesquise por um anime, mangá ou personagem"
+								value={search}
+								onChange={(e) => setSearch(e.target.value)}
+							/>
+						</InputGroup>
+					</FormControl>
 
 					{user ? (
 						<Menu>
