@@ -1,5 +1,5 @@
-import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
 import { Flex, IconButton, Image, Stack, Tag, Text } from "@chakra-ui/react";
+import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
 import React from "react";
 
 interface IAnimeCardProps {
@@ -14,7 +14,20 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({
 	year,
 }) => {
 	return (
-		<Flex pos={"relative"} h="400px" w="200px" flexDir={"column"} gap={5}>
+		<Flex
+			pos={"relative"}
+			h="400px"
+			w="200px"
+			flexDir={"column"}
+			gap={5}
+			transition="transform 0.3s"
+			_hover={{
+				transform: "scale(1.1)",
+			}}
+			cursor={"pointer"}
+			overflow="visible"
+			mr={2}
+		>
 			<Flex>
 				<Image src={image} objectFit={"cover"} bgSize={"cover"} />
 				<Flex
@@ -26,6 +39,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({
 					pos={"absolute"}
 					top={0}
 					zIndex={9999}
+					overflow="visible" // Defina o overflow para "visible"
 				>
 					<Flex justifyContent={"space-between"}>
 						<Tag h={"0.5"}>{year}</Tag>

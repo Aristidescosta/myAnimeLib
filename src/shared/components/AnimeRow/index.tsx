@@ -14,10 +14,12 @@ interface IAnimeRowProps {
 export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 	return (
 		<Box mb={30}>
-			<Heading as={"h2"} mb={8}>{title}</Heading>
-			<Swiper spaceBetween={50} slidesPerView={6}>
+			<Heading as={"h2"} mb={8}>
+				{title}
+			</Heading>
+			<Swiper spaceBetween={50} slidesPerView={1.8}>
 				{items.map((item, key) => (
-					<SwiperSlide key={key}>
+					<SwiperSlide key={key} style={{ overflow: "visible" }}>
 						<AnimeCard
 							image={item.images.jpg.image_url}
 							title={item.title}

@@ -1,9 +1,16 @@
-import { Box, Flex, Highlight, IconButton, Text } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-
+import {
+	Box,
+	Flex,
+	Highlight,
+	IconButton,
+	Text,
+	useMediaQuery,
+	useTheme,
+} from "@chakra-ui/react";
 
 import { APP_VARIANT_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
@@ -14,6 +21,14 @@ interface IFeaturedProps {
 }
 
 export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
+	const theme = useTheme();
+
+	const breakpoints = {
+		sm: theme.breakpoints["sm"],
+	};
+
+	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+
 	const genres = [];
 	for (const i in item.genres) {
 		genres.push(item.genres[i].name);
@@ -27,7 +42,6 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 			setDescription(item.synopsis);
 		}
 	}, [item.synopsis]);
-
 
 	return (
 		<Box
@@ -61,10 +75,10 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 							background: "linear-gradient(to top, #111 10%, transparent 90%)",
 						}}
 					>
-						<Text fontSize={60} fontWeight={"bold"}>
+						<Text fontSize={isSm[0] ? 24 : 60} fontWeight={"bold"}>
 							{item.title}
 						</Text>
-						<Box fontSize={18} fontWeight={"bold"} mt={15}>
+						<Box fontSize={isSm[0] ? 14 : 18} fontWeight={"bold"} mt={15}>
 							<Text display={"inline-block"} mr={15} color={APP_VARIANT_COLOR}>
 								{type.toUpperCase()}
 							</Text>
@@ -89,7 +103,12 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 								as={Link}
 								to={"/myList"}
 							/>
-							<Text fontSize={20} color={"#FFFFFF"} maxW={"40%"} mt={15}>
+							<Text
+								fontSize={isSm[0] ? 9 : 20}
+								color={"#FFFFFF"}
+								maxW={"40%"}
+								mt={15}
+							>
 								{description}
 							</Text>
 						</Flex>
