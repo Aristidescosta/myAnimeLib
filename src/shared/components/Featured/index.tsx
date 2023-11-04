@@ -1,11 +1,12 @@
 import { Box, Flex, Highlight, IconButton, Text } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+import React, { useState, useEffect } from "react";
 import { BsFillPlayFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+
+
 import { APP_VARIANT_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
-import axios, { AxiosError } from "axios";
 
 interface IFeaturedProps {
 	item: AnimeData;
@@ -14,45 +15,19 @@ interface IFeaturedProps {
 
 export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 	const genres = [];
-	for (let i in item.genres) {
+	for (const i in item.genres) {
 		genres.push(item.genres[i].name);
 	}
-	let code;
-	if (item.trailer.url)
-		code = item.trailer.url.slice(item.trailer.url.lastIndexOf("=") + 1);
 	const [description, setDescription] = useState("");
-	const [translatedText, setTranslatedText] = useState("");
 
 	useEffect(() => {
 		if (item.synopsis.length > 300) {
 			setDescription(item.synopsis.substring(0, 300) + "...");
-			traslate(description);
-			/* setDescription(translatedText); */
 		} else {
-			traslate(description);
 			setDescription(item.synopsis);
 		}
 	}, [item.synopsis]);
 
-	/* Função para traduzir */
-	const traslate = async (text: string) => {
-		const data1 = {
-			q: text,
-			source: "en",
-			target: "pt",
-		};
-		await axios
-			.post(
-				`https://script.google.com/macros/s/AKfycbwYSW_qyWiYPOAQNduUavlhrp3WWZ1MDf202CAfVzn8WPPItlNIo9nwA-1Pr6nvDzuVCw/exec`
-			)
-			.then((response) => {
-				console.log(response);
-				setTranslatedText(response.data.translatedText);
-			})
-			.catch((error: AxiosError) => {
-				console.log("erro: " + error.message);
-			});
-	};
 
 	return (
 		<Box
@@ -91,7 +66,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 						</Text>
 						<Box fontSize={18} fontWeight={"bold"} mt={15}>
 							<Text display={"inline-block"} mr={15} color={APP_VARIANT_COLOR}>
-								{item.type}
+								{type.toUpperCase()}
 							</Text>
 							<Text display={"inline-block"} mr={15}>
 								{item.year}
