@@ -16,11 +16,11 @@ import { APP_VARIANT_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
 
 interface IFeaturedProps {
-	item: AnimeData;
+	items: AnimeData[];
 	type: string;
 }
 
-export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
+export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 	const theme = useTheme();
 
 	const breakpoints = {
@@ -28,10 +28,16 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 	};
 
 	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+	/* const { getState } = useItemState(items[0])
+	const { item } = getState() */
+	const [itemPosition, setItemPosition] = useState<number>(0);
+	const [item, setItem] = useState<AnimeData>(items[itemPosition]);
 
 	const genres = [];
-	for (const i in item.genres) {
-		genres.push(item.genres[i].name);
+	if (item.genres) {
+		for (const i in item.genres) {
+			genres.push(item.genres[i].name);
+		}
 	}
 	const [description, setDescription] = useState("");
 
@@ -43,6 +49,25 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 		}
 	}, [item.synopsis]);
 
+	const handleClickRightButton = () => {
+		setItemPosition(
+			items.findIndex((itemFinded) => itemFinded.title === item.title)
+		);
+		if (itemPosition < 3) {
+			setItem(items[itemPosition + 1]);
+			setItemPosition(itemPosition + 1);
+		}
+	};
+	const handleClickLeftButton = () => {
+		setItemPosition(
+			items.findIndex((itemFinded) => itemFinded.title === item.title)
+		);
+		if (itemPosition > 0) {
+			setItem(items[itemPosition - 1]);
+			setItemPosition(itemPosition - 1);
+		}
+	};
+
 	return (
 		<Box
 			as="section"
@@ -51,6 +76,8 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 			bgImg={item.images.jpg.large_image_url}
 			h={"80vh"}
 			alignSelf={"flex-start"}
+			transition="transform 0.3s"
+			pos={"relative"}
 		>
 			<Box
 				bgGradient={"to top, #111 10%, transparent 90%"}
@@ -118,18 +145,20 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 							color={"#999"}
 							alignSelf={"flex-end"}
 							fontSize={60}
+							pos={"absolute"}
+							bottom={20}
+							right={20}
 						>
 							<IconButton
 								aria-label="Previous anime"
 								fontSize="40px"
 								icon={<ArrowBackIcon />}
-								as={Link}
-								to={"/myList"}
+								onClick={handleClickLeftButton}
 								color={"#999"}
 								bg={"none"}
 							/>
 							<Flex>
-								<Text>01</Text>
+								<Text>0{itemPosition + 1}</Text>
 								<Text alignSelf={"flex-end"} mt={-25} fontSize={20}>
 									/04
 								</Text>
@@ -138,8 +167,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ item, type }) => {
 								aria-label="Previous anime"
 								fontSize="40px"
 								icon={<ArrowForwardIcon />}
-								as={Link}
-								to={"/myList"}
+								onClick={handleClickRightButton}
 								color={"#FFF"}
 								bg={"none"}
 							/>

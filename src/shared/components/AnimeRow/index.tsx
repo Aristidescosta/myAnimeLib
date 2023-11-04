@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Heading, useMediaQuery, useTheme } from "@chakra-ui/react";
 import "swiper/css";
 
 import { AnimeData } from "../../types/AnimeData";
@@ -12,12 +12,20 @@ interface IAnimeRowProps {
 }
 
 export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
+	const theme = useTheme();
+
+	const breakpoints = {
+		sm: theme.breakpoints["sm"],
+	};
+
+	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+
 	return (
-		<Box mb={30}>
+		<Box mb={30} ml={6}>
 			<Heading as={"h2"} mb={8}>
 				{title}
 			</Heading>
-			<Swiper spaceBetween={50} slidesPerView={1.8}>
+			<Swiper spaceBetween={50} slidesPerView={isSm[0] ? 1.5 : 6}>
 				{items.map((item, key) => (
 					<SwiperSlide key={key} style={{ overflow: "visible" }}>
 						<AnimeCard

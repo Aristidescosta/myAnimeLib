@@ -6,13 +6,15 @@ import { AnimeRow, EmptyMessage, Featured } from "../../shared/components";
 import { RequestContext } from "../../shared/contexts/Index";
 import jikanDB from "../../jikanDB";
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
+import { AnimeData } from "../../shared/types/AnimeData";
 
 export const Home: React.FC = () => {
 	const [dataRequest, setDataRequest] = useState(
 		"https://api.jikan.moe/v4/seasons/now"
 	);
 	const [type, setType] = useState("anime");
-	const [request, setRequest] = useState(null);
+	const [request, setRequest] = useState<AnimeData[]>([]);
+	const REQUEST: AnimeData[] = [];
 	const [animeList, setAnimeList] = useState<
 		{
 			slug: string;
@@ -26,9 +28,16 @@ export const Home: React.FC = () => {
 		const res = await fetch(url);
 		const data = await res.json();
 		//Pegando o featured
-		const RANDOM_CHOISE = Math.floor(Math.random() * (data.data.length - 1));
-		const choice = data.data[RANDOM_CHOISE];
-		setRequest(choice);
+		let i = 0;
+		while (REQUEST.length < 4) {
+			const RANDOM_CHOISE = Math.floor(Math.random() * (data.data.length - 1));
+			const choice = data.data[RANDOM_CHOISE];
+			if (!REQUEST.includes(choice)) {
+				REQUEST.push(choice);
+				i++;
+			}
+		}
+		setRequest(REQUEST);
 	};
 
 	useEffect(() => {
@@ -49,7 +58,6 @@ export const Home: React.FC = () => {
 		// setRequest("https://api.jikan.moe/v4/seasons/now")
 		getTopRatedMovie(dataRequest);
 	}, [dataRequest]);
-	console.log(request);
 	return (
 		<RequestContext.Provider
 			value={{ dataRequest, setDataRequest, type, setType }}
@@ -62,16 +70,25 @@ export const Home: React.FC = () => {
 					alignItems={"center"}
 					justifyContent={"center"}
 				>
-					<CircularProgress value={30} size={'120px'} color={APP_VARIANT_COLOR} isIndeterminate/>
+					<CircularProgress
+						value={30}
+						size={"120px"}
+						color={APP_VARIANT_COLOR}
+						isIndeterminate
+					/>
 				</Box>
 			) : request ? (
 				<>
-					<Featured item={request} type={type} />
+					<Featured items={request} type={type} />
 					<Box>
 						<Box as="section">
 							{animeList &&
 								animeList.map((item, key) => (
-									<AnimeRow key={key} title={item.title} items={item.items.data} />
+									<AnimeRow
+										key={key}
+										title={item.title}
+										items={item.items.data}
+									/>
 								))}
 						</Box>
 					</Box>
