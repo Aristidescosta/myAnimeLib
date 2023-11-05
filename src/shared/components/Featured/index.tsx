@@ -14,6 +14,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Text,
+	Tooltip,
 	useDisclosure,
 	useMediaQuery,
 	useTheme,
@@ -138,15 +139,17 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 								</Highlight>
 							</Box>
 							<Flex gap={4} alignItems={"center"}>
-								<IconButton
-									isRound={true}
-									variant="solid"
-									colorScheme="teal"
-									aria-label="Done"
-									fontSize="20px"
-									icon={<BsFillPlayFill />}
-									onClick={handleOpenTrailler}
-								/>
+								<Tooltip label="Assistir trailer">
+									<IconButton
+										isRound={true}
+										variant="solid"
+										colorScheme="teal"
+										aria-label="Done"
+										fontSize="20px"
+										icon={<BsFillPlayFill />}
+										onClick={handleOpenTrailler}
+									/>
+								</Tooltip>
 								<Text
 									fontSize={isSm[0] ? 9 : 20}
 									color={"#FFFFFF"}
@@ -164,25 +167,26 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 								fontSize={60}
 								pos={"absolute"}
 								bottom={20}
-								right={20}
+								right={isSm[0] ? 18 : 20}
 							>
 								<IconButton
 									aria-label="Previous anime"
-									fontSize="40px"
+									fontSize={isSm[0] ? 18 : 40}
 									icon={<ArrowBackIcon />}
 									onClick={handleClickLeftButton}
 									color={"#999"}
 									bg={"none"}
 								/>
-								<Flex>
+								<Flex fontSize={isSm[0] ? 18 : 40}>
 									<Text>0{itemPosition + 1}</Text>
-									<Text alignSelf={"flex-end"} mt={-25} fontSize={20}>
+									<Text alignSelf={"flex-end"} mt={-25} fontSize={isSm[0] ? 9 : 20}>
 										/04
 									</Text>
 								</Flex>
 								<IconButton
 									aria-label="Previous anime"
-									fontSize="40px"
+									/* fontSize="40px" */
+									fontSize={isSm[0] ? 18 : 40}
 									icon={<ArrowForwardIcon />}
 									onClick={handleClickRightButton}
 									color={"#FFF"}
@@ -194,8 +198,13 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 				</Box>
 			</Box>
 
-			<Modal onClose={onClose} isOpen={isOpen}>
-				<ModalOverlay />
+			<Modal onClose={onClose} isOpen={isOpen} size={'3xl'}>
+				<ModalOverlay
+					bg="none"
+					backdropFilter="auto"
+					backdropInvert="20%"
+					backdropBlur="2px"
+				/>
 				<ModalContent>
 					<ModalHeader color={APP_COLOR}>{item.title}</ModalHeader>
 					<ModalCloseButton color={APP_COLOR} />
