@@ -22,7 +22,6 @@ import NavigationBar from "./NavgationBar";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
 import { APP_VARIANT_COLOR } from "../../utils/constants";
-import { Field, Form, Formik } from "formik";
 
 interface IHeader {
 	navbar: TNavbarItem[];
@@ -35,14 +34,12 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 
 	const [search, setSearch] = useState("");
 	const navigate = useNavigate();
-	const handleSubmit = () => {
-		/* e.preventDefault(); */
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		if (!search) return;
 		navigate(`/search?q=${search}`);
 		setSearch("");
 	};
-
-	console.log(search)
 
 	return (
 		<Box>
@@ -60,19 +57,21 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 				</Box>
 				<NavigationBar items={navbar} isBase={isBase || false} />
 				<HStack display={"flex"} justify={"space-between"}>
-					<FormControl>
-						<InputGroup>
-							<InputRightElement pointerEvents={"none"}>
-								<SearchIcon color={"grey.300"} />
-							</InputRightElement>
-							<Input
-								type="search"
-								placeholder="Pesquise por um anime, mangá ou personagem"
-								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-							/>
-						</InputGroup>
-					</FormControl>
+					<form onSubmit={handleSubmit}>
+						<FormControl >
+							<InputGroup>
+								<InputRightElement pointerEvents={"none"}>
+									<SearchIcon color={"grey.300"} />
+								</InputRightElement>
+								<Input
+									type="search"
+									placeholder="Pesquise por um anime, mangá ou personagem"
+									value={search}
+									onChange={(e) => setSearch(e.target.value)}
+								/>
+							</InputGroup>
+						</FormControl>
+					</form>
 
 					{user ? (
 						<Menu>
