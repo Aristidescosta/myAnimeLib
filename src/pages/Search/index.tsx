@@ -31,7 +31,6 @@ export const Search: React.FC = () => {
 			setIsloading(false)
 		);
 	}, [QUERY]);
-	console.log(searchAnimes);
 
 	return isLoading ? (
 		<>

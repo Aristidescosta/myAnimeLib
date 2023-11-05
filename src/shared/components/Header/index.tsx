@@ -16,12 +16,13 @@ import {
 	useBreakpointValue,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
 import { APP_VARIANT_COLOR } from "../../utils/constants";
+import { useTheBounce } from "../../hooks/hooks";
 
 interface IHeader {
 	navbar: TNavbarItem[];
@@ -31,6 +32,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 	const isBase = useBreakpointValue({ base: true, md: true, lg: false });
 	const user = getData(StorageEnum.Login);
 	const username = user ? user.split("@")[0] : null;
+	const { theBounce } = useTheBounce();
 
 	const [search, setSearch] = useState("");
 	const navigate = useNavigate();
@@ -40,6 +42,13 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 		navigate(`/search?q=${search}`);
 		setSearch("");
 	};
+
+	useEffect(() => {
+		theBounce(() => {
+			if (!search) return;
+			navigate(`/search?q=${search}`);
+		});
+	}, [theBounce, search]);
 
 	return (
 		<Box>
@@ -58,7 +67,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 				<NavigationBar items={navbar} isBase={isBase || false} />
 				<HStack display={"flex"} justify={"space-between"}>
 					<form onSubmit={handleSubmit}>
-						<FormControl >
+						<FormControl>
 							<InputGroup>
 								<InputRightElement pointerEvents={"none"}>
 									<SearchIcon color={"grey.300"} />
