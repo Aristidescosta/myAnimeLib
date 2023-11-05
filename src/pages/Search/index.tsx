@@ -5,12 +5,11 @@ import { useSearchParams } from "react-router-dom";
 
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
 import { AnimeData } from "../../shared/types/AnimeData";
-import { AnimeRow } from "../../shared/components";
+import { AnimeRow, EmptyMessage } from "../../shared/components";
 
 export const Search: React.FC = () => {
 	const [searchParams] = useSearchParams();
 	const QUERY = searchParams.get("q");
-	const [isLoading, setIsloading] = useState(false);
 
 	const [searchAnimes, setSearchAnimes] = useState<AnimeData[] | null>();
 
@@ -25,14 +24,11 @@ export const Search: React.FC = () => {
 	};
 
 	useEffect(() => {
-		setIsloading(true);
 		const searchAnimeWithQueryURL = `https://api.jikan.moe/v4/anime?q=${QUERY}&page=1`;
-		getSearchAnimes(searchAnimeWithQueryURL, setSearchAnimes).then(() =>
-			setIsloading(false)
-		);
+		getSearchAnimes(searchAnimeWithQueryURL, setSearchAnimes);
 	}, [QUERY]);
 
-	return isLoading ? (
+	return searchAnimes === null ? (
 		<>
 			<Text m={"8rem 0 4rem 3rem"} as={"h2"}>
 				Carrgando resultados para: {QUERY}
@@ -43,6 +39,8 @@ export const Search: React.FC = () => {
 				color={APP_VARIANT_COLOR}
 			/>
 		</>
+	) : searchAnimes === undefined ? (
+		<EmptyMessage message={`Nenhum resultado encontrado para ${QUERY}`} />
 	) : (
 		<Box>
 			<Box as="section">
