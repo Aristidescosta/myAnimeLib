@@ -35,7 +35,10 @@ export interface AnimeData {
 	members: number;
 	popularity: number;
 	producers: {
-		// Você pode definir a estrutura apropriada para os produtores
+		mal_id: number;
+		name: string;
+		type: string;
+		url: string;
 	}[];
 	rank: number;
 	rating: string;
