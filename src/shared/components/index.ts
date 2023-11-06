@@ -1,5 +1,6 @@
 export * from './ButtonControl'
 export * from './EmptyMessage'
+export * from './ModalAnime'
 export * from './AnimeCard'
 export * from './AnimeRow'
 export * from './Featured'

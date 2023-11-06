@@ -1,9 +1,15 @@
-import React from "react";
-import { Box, Heading, useMediaQuery, useTheme } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+	Box,
+	Heading,
+	useDisclosure,
+	useMediaQuery,
+	useTheme,
+} from "@chakra-ui/react";
 import "swiper/css";
 
 import { AnimeData } from "../../types/AnimeData";
-import { AnimeCard } from "..";
+import { AnimeCard, ModalAnime } from "..";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 interface IAnimeRowProps {
@@ -20,22 +26,31 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 
 	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
 
+	const [animeItem, setAnimeItem] = useState<AnimeData | null>(null);
+	const handleClickAnimeCard = (item: AnimeData) => {
+		setAnimeItem(item);
+		onOpen()
+	};
+
+	const { isOpen, onClose, onOpen } = useDisclosure();
+
 	return (
-		<Box mb={30} ml={6}>
-			<Heading as={"h2"} mb={8}>
-				{title}
-			</Heading>
-			<Swiper spaceBetween={50} slidesPerView={isSm[0] ? 1.5 : 6}>
-				{items.map((item, key) => (
-					<SwiperSlide key={key} style={{ overflow: "visible" }}>
-						<AnimeCard
-							image={item.images.jpg.image_url}
-							title={item.title}
-							year={item.year}
-						/>
-					</SwiperSlide>
-				))}
-			</Swiper>
-		</Box>
+		<>
+			<Box mb={30} ml={6}>
+				<Heading as={"h2"} mb={8}>
+					{title}
+				</Heading>
+				<Swiper spaceBetween={50} slidesPerView={isSm[0] ? 1.5 : 6}>
+					{items.map((item, key) => (
+						<SwiperSlide key={key} style={{ overflow: "visible" }}>
+							<AnimeCard item={item} handleClick={handleClickAnimeCard} />
+						</SwiperSlide>
+					))}
+				</Swiper>
+			</Box>
+			{animeItem && (
+				<ModalAnime item={animeItem} isOpen={isOpen} onClose={onClose} />
+			)}
+		</>
 	);
 };

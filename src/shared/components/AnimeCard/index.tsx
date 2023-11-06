@@ -1,18 +1,14 @@
 import { Flex, IconButton, Image, Stack, Tag, Text } from "@chakra-ui/react";
 import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
 import React from "react";
+import { AnimeData } from "../../types/AnimeData";
 
 interface IAnimeCardProps {
-	image: string;
-	title: string;
-	year: number;
+	item: AnimeData;
+	handleClick: (newItem: AnimeData) => void
 }
 
-export const AnimeCard: React.FC<IAnimeCardProps> = ({
-	image,
-	title,
-	year,
-}) => {
+export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 	return (
 		<Flex
 			pos={"relative"}
@@ -26,10 +22,11 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({
 			}}
 			cursor={"pointer"}
 			overflow="visible"
+			onClick={() => handleClick(item)}
 			mr={2}
 		>
 			<Flex>
-				<Image src={image} objectFit={"cover"} bgSize={"cover"} />
+				<Image src={item.images.webp.large_image_url} objectFit={"cover"} bgSize={"cover"} />
 				<Flex
 					p={2}
 					flexDir={"column"}
@@ -42,7 +39,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({
 					overflow="visible" // Defina o overflow para "visible"
 				>
 					<Flex justifyContent={"space-between"}>
-						<Tag h={"0.5"}>{year}</Tag>
+						<Tag h={"0.5"}>{item.year}</Tag>
 						<Stack>
 							<IconButton
 								aria-label="Adicionar aos favoritos"
@@ -62,7 +59,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({
 
 			<Flex flexDir={"column"} w={"full"} fontWeight={"bold"}>
 				<Text textOverflow={"ellipsis"} w={"full"}>
-					{title}
+					{item.title}
 				</Text>
 				<Stack direction={["column", "row"]} spacing="8px">
 					<Tag colorScheme="gray" w={"min"}>

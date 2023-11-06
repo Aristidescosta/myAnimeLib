@@ -87,7 +87,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 				as="section"
 				bgPos={"center"}
 				bgSize={"cover"}
-				bgImg={item.images.jpg.large_image_url}
+				bgImg={item.images.webp.large_image_url}
 				h={"80vh"}
 				alignSelf={"flex-start"}
 				transition="transform 0.3s"
