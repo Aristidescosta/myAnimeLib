@@ -4,6 +4,7 @@ import { BaseLayoutHomePage } from "../pages/BaseLayoutHomePage";
 import { ROUTE_LOGIN } from "../shared/utils/constants";
 import { Search } from "../pages/Search";
 import { Auth } from "../pages/Auth";
+import Home from "../pages/Home";
 
 export const AppRoute = () => {
 	const router = createBrowserRouter([
@@ -11,7 +12,7 @@ export const AppRoute = () => {
 			path: "/",
 			element: (
 				<BaseLayoutHomePage>
-					<h1>TESTE</h1>
+					<Home />
 				</BaseLayoutHomePage>
 			),
 			errorElement: <h1>Página de erro</h1>,
