@@ -3,10 +3,10 @@ import { Box, CircularProgress } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 
 import { AnimeRow, EmptyMessage, Featured } from "../../shared/components";
-import { RequestContext } from "../../shared/contexts/Index";
-import jikanDB from "../../jikanDB";
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
+import { RequestContext } from "../../shared/contexts/Index";
 import { AnimeData } from "../../shared/types/AnimeData";
+import jikanDB from "../../jikanDB";
 
 export const Home: React.FC = () => {
 	const [dataRequest, setDataRequest] = useState(
@@ -54,9 +54,8 @@ export const Home: React.FC = () => {
 	}, []);
 
 	useEffect(() => {
-		// setRequest("https://api.jikan.moe/v4/seasons/now")
 		getTopRatedMovie(dataRequest);
-	}, [dataRequest]);
+	});
 	return (
 		<RequestContext.Provider
 			value={{ dataRequest, setDataRequest, type, setType }}

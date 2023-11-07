@@ -75,12 +75,6 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
     onOpen();
   };
 
-  const handleClickLeftArrow = () => {
-	console.log(swiper)
-	/* swiper.allowSlideNext */
-	swiperSlide.isNext
-  }
-
   return (
     <>
       <Swiper
@@ -183,16 +177,8 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
                       bottom={20}
                       right={isSm[0] ? 18 : 20}
                     >
-                      <IconButton
-                        aria-label="Previous anime"
-                        fontSize={isSm[0] ? 18 : 40}
-                        icon={<ArrowBackIcon />}
-                        onClick={handleClickLeftArrow}
-                        color={"#999"}
-                        bg={"none"}
-                      />
                       <Flex fontSize={isSm[0] ? 18 : 40}>
-                        <Text>0{itemPosition + 1}</Text>
+                        <Text>0{key + 1}</Text>
                         <Text
                           alignSelf={"flex-end"}
                           mt={-25}
@@ -201,15 +187,6 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
                           /04
                         </Text>
                       </Flex>
-                      <IconButton
-                        aria-label="Previous anime"
-                        /* fontSize="40px" */
-                        fontSize={isSm[0] ? 18 : 40}
-                        icon={<ArrowForwardIcon />}
-                        onClick={() => swiper.slideNext()}
-                        color={"#FFF"}
-                        bg={"none"}
-                      />
                     </Flex>
                   </Flex>
                 </Box>
