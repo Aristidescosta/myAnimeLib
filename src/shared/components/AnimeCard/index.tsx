@@ -5,7 +5,7 @@ import { AnimeData } from "../../types/AnimeData";
 
 interface IAnimeCardProps {
 	item: AnimeData;
-	handleClick: (newItem: AnimeData) => void
+	handleClick: (newItem: AnimeData) => void;
 }
 
 export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
@@ -24,9 +24,14 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 			overflow="visible"
 			onClick={() => handleClick(item)}
 			mr={2}
+			boxShadow={"2xl"}
 		>
 			<Flex>
-				<Image src={item.images.webp.large_image_url} objectFit={"cover"} bgSize={"cover"} />
+				<Image
+					src={item.images.webp.large_image_url}
+					objectFit={"cover"}
+					bgSize={"cover"}
+				/>
 				<Flex
 					p={2}
 					flexDir={"column"}

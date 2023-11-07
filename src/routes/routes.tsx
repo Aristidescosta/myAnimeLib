@@ -1,9 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 
-import { Home, Search } from '../pages'
+
 import { BaseLayoutHomePage } from '../pages/BaseLayoutHomePage'
-import { Auth } from '../pages/Auth'
 import { ROUTE_LOGIN } from '../shared/utils/constants'
+import { Search } from '../pages/Search'
+import { Auth } from '../pages/Auth'
+import { Home } from '../pages/Home'
 
 export const AppRoute = () => {
 	const router = createBrowserRouter([
