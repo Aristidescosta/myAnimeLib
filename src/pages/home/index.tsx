@@ -8,7 +8,7 @@ import { RequestContext } from "../../shared/contexts/Index";
 import { AnimeData } from "../../shared/types/AnimeData";
 import jikanDB from "../../jikanDB";
 
-export const Home: React.FC = () => {
+export default function Home(): JSX.Element {
 	const [dataRequest, setDataRequest] = useState(
 		"https://api.jikan.moe/v4/seasons/now"
 	);
@@ -96,4 +96,4 @@ export const Home: React.FC = () => {
 			)}
 		</RequestContext.Provider>
 	);
-};
+}
