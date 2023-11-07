@@ -72,6 +72,7 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 					pagination={{ clickable: true }}
 					scrollbar={{ draggable: true }}
 					effect="card"
+					spaceBetween={50}
 					slidesPerView={
 						windowSize.width <= 480
 							? 1.5
