@@ -2,9 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
 	Box,
 	Heading,
-	useDisclosure,
-	useMediaQuery,
-	useTheme,
+	useDisclosure
 } from "@chakra-ui/react";
 import "swiper/css";
 
@@ -61,7 +59,7 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 	}, []);
 
 	const { isOpen, onClose, onOpen } = useDisclosure();
-	console.log(windowSize.width);
+
 	return (
 		<>
 			<Box mb={30} ml={6}>
