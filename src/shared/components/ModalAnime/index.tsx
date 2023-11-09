@@ -13,6 +13,8 @@ import {
 	Image,
 	Tag,
 	Text,
+	useMediaQuery,
+	useTheme,
 } from "@chakra-ui/react";
 import { APP_COLOR } from "../../utils/constants";
 
@@ -27,6 +29,14 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 	isOpen,
 	onClose,
 }) => {
+	const theme = useTheme();
+
+	const breakpoints = {
+		sm: theme.breakpoints["sm"],
+	};
+
+	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
+
 	const STUDIOS = item.studios.map((studio) => studio.name);
 	const PRODUCERS = item.producers.map((producer) => producer.name);
 
@@ -41,47 +51,42 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 			<DrawerOverlay />
 			<DrawerContent>
 				<DrawerCloseButton />
-				{/* <DrawerHeader bgColor={APP_COLOR}>{item.title}</DrawerHeader> */}
 
 				<DrawerBody bgColor={APP_COLOR} p={0}>
 					<Box
-						w={"full"}
-						h={"full"}
 						display={"flex"}
-						overflow={"hidden"}
-						textOverflow={"ellipsis"}
+						h={"full"}
+						w={"full"}
+						flexDir={isSm[0] ? "column" : "row"}
 					>
-						<Image
-							src={item.images.webp.large_image_url}
-							bgRepeat={"no-repeat"}
-							bgSize={"cover"}
-							borderTopRightRadius={15}
-							borderBottomRightRadius={15}
-							zIndex={99999}
-							boxShadow="dark-lg"
-						/>
+						<Box flex={isSm[0] ? 1 : 2} h={isSm[0] ? "30%" : "full"}>
+							<Image
+								src={item.images.webp.large_image_url}
+								bgRepeat={"no-repeat"}
+								bgSize={"cover"}
+								borderTopRightRadius={15}
+								borderBottomRightRadius={15}
+								zIndex={99999}
+								boxShadow="dark-lg"
+								w={"full"}
+								h={"full"}
+							/>
+						</Box>
 						<Box
-							width={"50%"}
-							h={"full"}
+							h={isSm[0] ? "70%" : "full"}
 							display={"flex"}
 							justifyContent={"center"}
 							alignItems={"center"}
+							flex={isSm[0] ? 2 : 1}
 						>
 							<Box
-								/* bg={"#FFF"} */
-								/* p={5} */
 								color={APP_COLOR}
 								mr={5}
 								borderTopRightRadius={8}
 								borderBottomRightRadius={8}
-								/* width={"50%"} */
-								/* ml={"-10%"} */
 								boxShadow="2xl"
 								p="6"
 								bg="white"
-								maxH={"50%"}
-								textOverflow={"ellipsis"}
-								/* overflow={"scroll"} */
 							>
 								<Text as={"h4"} fontWeight={"bold"}>
 									{item.title}
@@ -115,17 +120,33 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 								<Text as={"h5"} fontWeight={"bold"}>
 									Informações
 								</Text>
-								<Text fontSize={"small"}>Tipo: {item.type}</Text>
-								<Text fontSize={"small"}>Epsódeos: {item.episodes}</Text>
 								<Text fontSize={"small"}>
-									Status: {item.airing ? "Atualmente no ar" : "Finalizado"}
+									{" "}
+									<strong>Tipo</strong>: {item.type}
 								</Text>
-								<Text fontSize={"small"}>Exibido: {item.aired.string}</Text>
 								<Text fontSize={"small"}>
-									Produtores: {PRODUCERS.join(", ")}
+									{" "}
+									<strong>Epsódeos</strong>: {item.episodes}
 								</Text>
-								<Text fontSize={"small"}>Studios: {STUDIOS.join(", ")}</Text>
-								<Text fontSize={"small"}>Fonte: {item.source}</Text>
+								<Text fontSize={"small"}>
+									<strong>Status</strong>:{" "}
+									{item.airing ? "Atualmente no ar" : "Finalizado"}
+								</Text>
+								<Text fontSize={"small"}>
+									{" "}
+									<strong>Exibido</strong>: {item.aired.string}
+								</Text>
+								<Text fontSize={"small"}>
+									<strong>Produtores</strong>: {PRODUCERS.join(", ")}
+								</Text>
+								<Text fontSize={"small"}>
+									{" "}
+									<strong>Studios</strong>: {STUDIOS.join(", ")}
+								</Text>
+								<Text fontSize={"small"}>
+									{" "}
+									<strong>Fonte</strong>: {item.source}
+								</Text>
 
 								<Button colorScheme="blue" mt={15}>
 									Ver mais
