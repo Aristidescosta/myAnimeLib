@@ -183,7 +183,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 													mt={-25}
 													fontSize={isSm[0] ? 9 : 20}
 												>
-													/04
+													/{items.length}
 												</Text>
 											</Flex>
 										</Flex>
