@@ -15,7 +15,6 @@ export default function Home(): JSX.Element {
 		calculateIntervalBetweenDates,
 		setAnimeData,
 		setAnimeList,
-		setRequest,
 		request,
 		animeList,
 		animeData,
@@ -30,12 +29,10 @@ export default function Home(): JSX.Element {
 	const toastIdRef = useRef<number | undefined>();
 
 	useEffect(() => {
-		// Verifica a conectividade à internet quando o componente é montado
 		online().then((online) => {
 			setIsOnline(online);
 		});
 
-		// Adiciona um ouvinte de eventos para verificar alterações de conectividade
 		const handleOnlineStatusChange = () => {
 			setIsOnline(navigator.onLine);
 		};
@@ -43,7 +40,6 @@ export default function Home(): JSX.Element {
 		window.addEventListener("online", handleOnlineStatusChange);
 		window.addEventListener("offline", handleOnlineStatusChange);
 
-		// Remove os ouvintes de eventos ao desmontar o componente
 		return () => {
 			window.removeEventListener("online", handleOnlineStatusChange);
 			window.removeEventListener("offline", handleOnlineStatusChange);
@@ -51,17 +47,15 @@ export default function Home(): JSX.Element {
 	}, []);
 
 	useEffect(() => {
-		console.log(isOnline)
 		if (!isOnline) {
 			toastIdRef.current = toast({
-				title: 'Internet',
-				description: 'Conexão a internet perdida',
-				status: 'warning', // Certifique-se de que 'ToastStatus.WARNING' está definido corretamente
+				title: "Internet",
+				description: "Conexão a internet perdida",
+				status: ToastStatus.WARNING,
 				duration: 900000,
-				position: 'top-right',
+				position: "top-right",
 			}) as number;
 		} else {
-			console.log(toastIdRef)
 			if (toastIdRef.current) {
 				toast.update(toastIdRef.current, {
 					description: "Conexão restabelecida",
@@ -73,7 +67,6 @@ export default function Home(): JSX.Element {
 	}, [isOnline]);
 
 	const getAnimeList = () => {
-		console.log("Vou ser executado");
 		jikanDB
 			.getAnimeList()
 			.then((response) => {
@@ -105,7 +98,6 @@ export default function Home(): JSX.Element {
 	useEffect(() => {
 		setIsLoading(true);
 		if (animeList.length < 0) {
-			console.log("teste");
 			getAnimeList();
 		} else {
 			const CURRENT_DATE = new Date();
@@ -113,7 +105,6 @@ export default function Home(): JSX.Element {
 				calculateIntervalBetweenDates(CURRENT_DATE);
 			if (INTERVAL_BETWEEN_DATES && INTERVAL_BETWEEN_DATES.DAYS >= 1) {
 				getAnimeList();
-				setRequest("https://api.jikan.moe/v4/seasons/now");
 			} else {
 				setIsLoading(false);
 			}
