@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { BsFillPlayFill } from "react-icons/bs";
 import {
 	Box,
 	Flex,
@@ -6,20 +7,18 @@ import {
 	IconButton,
 	Text,
 	Tooltip,
-	useMediaQuery,
-	useTheme,
 } from "@chakra-ui/react";
 
+import { useWindowMeasure } from "../../states/useWindowMeasure";
 import { useDataAnime } from "../../states/useAnimeRequest";
 import { APP_VARIANT_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
-import { BsFillPlayFill } from "react-icons/bs";
 
 interface IFeaturedScreenProps {
 	item: AnimeData;
 	setAutoplay: (isAutoplay: boolean) => void;
 	onOpenTrailer: () => void;
-	currentAnime: number
+	currentAnime: number;
 }
 
 export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
@@ -28,17 +27,24 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
 	currentAnime,
 	item,
 }) => {
-	const theme = useTheme();
 	const { setItemAnime, animeData } = useDataAnime();
 
-	const breakpoints = {
-		sm: theme.breakpoints["sm"],
-		md: theme.breakpoints["md"],
-	};
+	const { windowSize, setWindowSize, lg, ls, md, sm, xs } = useWindowMeasure();
 
-	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
-	const isMd = useMediaQuery(`(max-width: ${breakpoints.md})`);
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowSize({
+				width: window.innerWidth,
+				height: window.innerHeight,
+			});
+		};
 
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, []);
 	const genres: string | string[] = [];
 	if (item) {
 		for (const i in item.genres) {
@@ -94,10 +100,41 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
 							background: "linear-gradient(to top, #111 10%, transparent 90%)",
 						}}
 					>
-						<Text fontSize={isMd ? 34 : isSm[0] ? 24 : 60} fontWeight={"bold"}>
+						<Text
+							fontSize={
+								windowSize.width <= xs
+									? 24
+									: windowSize.width <= sm
+									? 28
+									: windowSize.width <= md
+									? 32
+									: windowSize.width <= lg
+									? 36
+									: windowSize.width <= ls
+									? 40
+									: 48
+							}
+							fontWeight={"bold"}
+						>
 							{item.title}
 						</Text>
-						<Box fontSize={isSm[0] ? 14 : 18} fontWeight={"bold"} mt={15}>
+						<Box
+							fontSize={
+								windowSize.width <= xs
+									? 14
+									: windowSize.width <= sm
+									? 20
+									: windowSize.width <= md
+									? 26
+									: windowSize.width <= lg
+									? 42
+									: windowSize.width <= ls
+									? 48
+									: 54
+							}
+							fontWeight={"bold"}
+							mt={15}
+						>
 							<Text display={"inline-block"} mr={15} color={APP_VARIANT_COLOR}>
 								{item.type.toUpperCase()}
 							</Text>
@@ -124,7 +161,19 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
 								/>
 							</Tooltip>
 							<Text
-								fontSize={isMd ? 18 : isSm[0] ? 9 : 22}
+								fontSize={
+									windowSize.width <= xs
+										? 11
+										: windowSize.width <= sm
+										? 18
+										: windowSize.width <= md
+										? 24
+										: windowSize.width <= lg
+										? 30
+										: windowSize.width <= ls
+										? 36
+										: 42
+								}
 								color={"#FFFFFF"}
 								maxW={"40%"}
 								mt={15}
@@ -140,16 +189,54 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
 							fontSize={60}
 							pos={"absolute"}
 							bottom={20}
-							right={isSm[0] ? 18 : 20}
+							right={
+								windowSize.width <= xs
+									? 1.5
+									: windowSize.width <= sm
+									? 2
+									: windowSize.width <= md
+									? 3
+									: windowSize.width <= lg
+									? 4
+									: windowSize.width <= ls
+									? 5
+									: 6
+							}
 						>
-							<Flex fontSize={isSm[0] ? 18 : 40}>
+							<Flex
+								fontSize={
+									windowSize.width <= xs
+										? 11
+										: windowSize.width <= sm
+										? 18
+										: windowSize.width <= md
+										? 24
+										: windowSize.width <= lg
+										? 30
+										: windowSize.width <= ls
+										? 36
+										: 42
+								}
+							>
 								<Text>0{currentAnime + 1}</Text>
 								<Text
 									alignSelf={"flex-end"}
 									mt={-25}
-									fontSize={isSm[0] ? 9 : 20}
+									fontSize={
+										windowSize.width <= xs
+											? 11
+											: windowSize.width <= sm
+											? 18
+											: windowSize.width <= md
+											? 24
+											: windowSize.width <= lg
+											? 30
+											: windowSize.width <= ls
+											? 36
+											: 42
+									}
 								>
-									/0{ animeData.length }
+									/0{animeData.length}
 								</Text>
 							</Flex>
 						</Flex>
