@@ -10,18 +10,16 @@ import { useToastMessage } from "../../shared/chakra-ui-api/toast";
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
 import jikanDB from "../../jikanDB";
 
-export const Home:React.FC = () => {
+export const Home: React.FC = () => {
 	const {
 		calculateIntervalBetweenDates,
 		setAnimeData,
 		setAnimeList,
-		request,
 		animeList,
 		animeData,
 		type,
 	} = useDataAnime();
 	const [isLoading, setIsLoading] = useState(true);
-	/* const { setIsOnline, isOnline } = useVerifyInternet(); */
 
 	const { ToastStatus } = useToastMessage();
 	const { isOnline, setIsOnline } = useVerifyInternet();
@@ -67,6 +65,7 @@ export const Home:React.FC = () => {
 	}, [isOnline]);
 
 	const getAnimeList = () => {
+		console.log("Fui convocado")
 		jikanDB
 			.getAnimeList()
 			.then((response) => {
@@ -77,12 +76,11 @@ export const Home:React.FC = () => {
 					);
 
 					const RANDOM_CHOISE = Math.floor(
-						Math.random() * response[RANDOM_CHOISE_SLUGS].items.length
+						Math.random() * response[RANDOM_CHOISE_SLUGS].items.data.length
 					);
 
-					const choice =
-						response[RANDOM_CHOISE_SLUGS].items.data[RANDOM_CHOISE];
-					if (animeData.includes(choice)) {
+					const choice = response[RANDOM_CHOISE_SLUGS].items.data[RANDOM_CHOISE];
+					if (!animeData.includes(choice)) {
 						setAnimeData([...animeData, choice]);
 						animeDataCount++;
 					}
@@ -94,10 +92,9 @@ export const Home:React.FC = () => {
 				setIsLoading(false);
 			});
 	};
-
 	useEffect(() => {
 		setIsLoading(true);
-		if (animeList.length < 0) {
+		if (animeList.length === 0 || animeData.length === 0) {
 			getAnimeList();
 		} else {
 			const CURRENT_DATE = new Date();
@@ -127,7 +124,7 @@ export const Home:React.FC = () => {
 						isIndeterminate
 					/>
 				</Box>
-			) : request ? (
+			) : animeData.length > 0 ? (
 				<>
 					<Featured items={animeData} type={type} />
 					<Box>
@@ -148,4 +145,4 @@ export const Home:React.FC = () => {
 			)}
 		</>
 	);
-}
+};
