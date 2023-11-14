@@ -60,7 +60,6 @@ export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 				slidesPerView={1}
 				autoplay={autoplay}
 				loop
-				grabCursor
 			>
 				{items.map((item, key) => (
 					<SwiperSlide key={key} style={{ overflow: "visible" }}>
