@@ -1,221 +1,96 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Swiper, SwiperSlide } from "swiper/react";
-import React, { useState, useEffect } from "react";
-import { BsFillPlayFill } from "react-icons/bs";
+import React, { useState } from "react";
 import {
 	AspectRatio,
-	Box,
-	Flex,
-	Highlight,
-	IconButton,
 	Modal,
 	ModalBody,
 	ModalCloseButton,
 	ModalContent,
 	ModalHeader,
 	ModalOverlay,
-	Text,
-	Tooltip,
 	useDisclosure,
-	useMediaQuery,
-	useTheme,
 } from "@chakra-ui/react";
-import { Navigation, Scrollbar, A11y, EffectCube } from "swiper/modules";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-import "swiper/css/effect-cube";
 
-import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
+import {
+	Navigation,
+	Scrollbar,
+	A11y,
+	EffectFade,
+	Autoplay,
+} from "swiper/modules";
+
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/scrollbar";
+import "swiper/css/autoplay";
+
+import { APP_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
+import { FeaturedScreen } from "./FeaturedScreen";
+import { useDataAnime } from "../../states/useAnimeRequest";
 
 interface IFeaturedProps {
 	items: AnimeData[];
-	type: string;
 }
 
-export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
-	const theme = useTheme();
-	const { isOpen, onClose, onOpen } = useDisclosure();
+export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
+	const { onClose, isOpen, onOpen } = useDisclosure();
+	const { itemAnime, setItemAnime } = useDataAnime();
+	const [autoplay, setAutoplay] = useState(true)
 
-	const breakpoints = {
-		sm: theme.breakpoints["sm"],
-		md: theme.breakpoints["md"],
-	};
-
-	const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
-	const isMd = useMediaQuery(`(max-width: ${breakpoints.md})`);
-
-	const [item] = useState<AnimeData>(items[0]);
-
-	const genres: string | string[] = [];
-	if (item) {
-		for (const i in item.genres) {
-			genres.push(item.genres[i].name);
-		}
+	const onCloseTrailer = () =>{
+		onClose()
+		setItemAnime(null)
+		setAutoplay(true)
 	}
-	const [description, setDescription] = useState("");
 
-	useEffect(() => {
-		if (item.synopsis.length > 300) {
-			setDescription(item.synopsis.substring(0, 300) + "...");
-		} else {
-			setDescription(item.synopsis);
-		}
-	}, [item.synopsis]);
-
-	const handleOpenTrailler = () => {
-		onOpen();
-	};
+	const onOpenTrailer = () =>{
+		onOpen()
+	}
 
 	return (
 		<>
 			<Swiper
 				spaceBetween={50}
-				modules={[Navigation, Scrollbar, A11y, EffectCube]}
+				modules={[Navigation, Scrollbar, A11y, EffectFade, Autoplay]}
 				navigation
-				effect="cube"
+				effect="fade"
 				slidesPerView={1}
-				autoplay
+				autoplay={autoplay}
 				loop
-				grabCursor
 			>
 				{items.map((item, key) => (
 					<SwiperSlide key={key} style={{ overflow: "visible" }}>
-						<Box
-							as="section"
-							bgPos={"center"}
-							bgSize={"cover"}
-							bgImg={item.images.webp.large_image_url}
-							h={"80vh"}
-							alignSelf={"flex-start"}
-							transition="transform 0.3s"
-							pos={"relative"}
-						>
-							<Box
-								bgGradient={"to top, #111 10%, transparent 90%"}
-								w={"inherit"}
-								h={"inherit"}
-							>
-								<Box
-									style={{
-										background:
-											"linear-gradient(to top, #111 10%, transparent 90%)",
-									}}
-									w={"inherit"}
-									h={"inherit"}
-								>
-									<Flex
-										w={"inherit"}
-										h={"inherit"}
-										flexDir={"column"}
-										pb={150}
-										pl={30}
-										pt={70}
-										style={{
-											background:
-												"linear-gradient(to top, #111 10%, transparent 90%)",
-										}}
-									>
-										<Text
-											fontSize={isMd ? 34 : isSm[0] ? 24 : 60}
-											fontWeight={"bold"}
-										>
-											{item.title}
-										</Text>
-										<Box
-											fontSize={isSm[0] ? 14 : 18}
-											fontWeight={"bold"}
-											mt={15}
-										>
-											<Text
-												display={"inline-block"}
-												mr={15}
-												color={APP_VARIANT_COLOR}
-											>
-												{type.toUpperCase()}
-											</Text>
-											<Text display={"inline-block"} mr={15}>
-												{item.year}
-											</Text>
-											<Highlight
-												query={genres}
-												styles={{ px: "1", py: "1", bg: "#999" }}
-											>
-												{genres.join(" ")}
-											</Highlight>
-										</Box>
-										<Flex gap={4} alignItems={"center"}>
-											<Tooltip label="Assistir trailer">
-												<IconButton
-													isRound={true}
-													variant="solid"
-													colorScheme="teal"
-													aria-label="Done"
-													fontSize="20px"
-													icon={<BsFillPlayFill />}
-													onClick={handleOpenTrailler}
-												/>
-											</Tooltip>
-											<Text
-												fontSize={isMd ? 18 : isSm[0] ? 9 : 22}
-												color={"#FFFFFF"}
-												maxW={"40%"}
-												mt={15}
-											>
-												{description}
-											</Text>
-										</Flex>
-
-										<Flex
-											alignItems={"center"}
-											color={"#999"}
-											alignSelf={"flex-end"}
-											fontSize={60}
-											pos={"absolute"}
-											bottom={20}
-											right={isSm[0] ? 18 : 20}
-										>
-											<Flex fontSize={isSm[0] ? 18 : 40}>
-												<Text>0{key + 1}</Text>
-												<Text
-													alignSelf={"flex-end"}
-													mt={-25}
-													fontSize={isSm[0] ? 9 : 20}
-												>
-													/{items.length}
-												</Text>
-											</Flex>
-										</Flex>
-									</Flex>
-								</Box>
-							</Box>
-						</Box>
+						<FeaturedScreen item={item} setAutoplay={setAutoplay} onOpenTrailer={onOpenTrailer} currentAnime={key}/>
 					</SwiperSlide>
 				))}
 			</Swiper>
 
-			<Modal onClose={onClose} isOpen={isOpen} size={"3xl"}>
-				<ModalOverlay
-					bg="none"
-					backdropFilter="auto"
-					backdropInvert="20%"
-					backdropBlur="2px"
-				/>
-				<ModalContent>
-					<ModalHeader color={APP_COLOR}>{item.title}</ModalHeader>
-					<ModalCloseButton color={APP_COLOR} />
-					<ModalBody bgColor={APP_COLOR} w={"full"} p={0}>
-						<AspectRatio w={"full"} h={"full"} ratio={1}>
-							<iframe
-								title={item.title}
-								src={item.trailer.embed_url}
-								allowFullScreen
-							/>
-						</AspectRatio>
-					</ModalBody>
-				</ModalContent>
-			</Modal>
+			{itemAnime && (
+				<Modal onClose={onCloseTrailer} isOpen={isOpen} size={"3xl"}>
+					<ModalOverlay
+						bg="none"
+						backdropFilter="auto"
+						backdropInvert="20%"
+						backdropBlur="2px"
+					/>
+					<ModalContent>
+						<ModalHeader color={APP_COLOR}>{itemAnime.title}</ModalHeader>
+						<ModalCloseButton color={APP_COLOR} />
+						<ModalBody bgColor={APP_COLOR} w={"full"} p={0}>
+							<AspectRatio w={"full"} h={"full"} ratio={1}>
+								<iframe
+									title={itemAnime.title}
+									src={itemAnime.trailer.embed_url}
+									allowFullScreen
+								/>
+							</AspectRatio>
+						</ModalBody>
+					</ModalContent>
+				</Modal>
+			)}
 		</>
 	);
 };

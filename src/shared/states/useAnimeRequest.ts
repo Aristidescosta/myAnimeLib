@@ -22,8 +22,8 @@ interface IRequestProps {
 	setType: (newType: string) => void
 	request: string,
 	setRequest: (request: string) => void
-	item: AnimeData | null
-	setItem: (newItem: AnimeData) => void
+	itemAnime: AnimeData | null
+	setItemAnime: (newItem: AnimeData | null) => void
 	clearItem: () => void
 	clearAllItems: () => void
 	createdAt: string
@@ -37,7 +37,7 @@ export const useDataAnime = create(
 			animeData: [],
 			type: "",
 			request: "https://api.jikan.moe/v4/seasons/now",
-			item: null,
+			itemAnime: null,
 			createdAt: "",
 			setAnimeList: (newAnimelist: 	{
 			slug: string;
@@ -47,14 +47,11 @@ export const useDataAnime = create(
 				state.createdAt = new Date().toISOString()
 				return ({ animeList: newAnimelist })
 			}),
-			setAnimeData: (newAnimeData: AnimeData[]) => set(state => {
-				state.createdAt = new Date().toISOString()
-				return ({ animeData: newAnimeData })
-			}),
+			setAnimeData: (newAnimeData: AnimeData[]) => set(() =>  ({ animeData: newAnimeData })),
 			setType: (newType: string) => set(() => ({ type: newType })),
 			setRequest: (request: string) => set(() => ({ request: request })),
-			setItem: (newItem: AnimeData) => set(() => ({ item: newItem })),
-			clearItem: () => set(() => ({ item: null })),
+			setItemAnime: (newItem: AnimeData | null) => set(() => ({ itemAnime: newItem })),
+			clearItem: () => set(() => ({ itemAnime: null })),
 			clearAllItems: () => set(() => ({ animeList: [] })),
 			calculateIntervalBetweenDates(date: Date) {
 				const CURRENT_DATE = new Date(get().createdAt)

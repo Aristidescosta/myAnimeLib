@@ -16,8 +16,7 @@ export const Home: React.FC = () => {
 		setAnimeData,
 		setAnimeList,
 		animeList,
-		animeData,
-		type,
+		animeData
 	} = useDataAnime();
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -126,7 +125,7 @@ export const Home: React.FC = () => {
 				</Box>
 			) : animeData.length > 0 ? (
 				<>
-					<Featured items={animeData} type={type} />
+					<Featured items={animeData}/>
 					<Box>
 						<Box as="section">
 							{animeList.length > 0 &&
