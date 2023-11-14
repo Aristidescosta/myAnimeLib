@@ -21,15 +21,11 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/effect-fade";
 import "./style.css";
+import { useWindowMeasure } from "../../states/useWindowMeasure";
 
 interface IAnimeRowProps {
 	title: string;
 	items: AnimeData[];
-}
-
-interface WindowSize {
-	width: number;
-	height: number;
 }
 
 export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
@@ -38,10 +34,7 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 		setAnimeItem(item);
 		onOpen();
 	};
-	const [windowSize, setWindowSize] = useState<WindowSize>({
-		width: window.innerWidth,
-		height: window.innerHeight,
-	});
+	const { windowSize, setWindowSize, lg, ls, md, sm, xs } = useWindowMeasure()
 
 	useEffect(() => {
 		const handleResize = () => {
@@ -74,15 +67,15 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 					effect="card"
 					spaceBetween={50}
 					slidesPerView={
-						windowSize.width <= 480
+						windowSize.width <= xs
 							? 1.5
-							: windowSize.width <= 768
+							: windowSize.width <= sm
 							? 2
-							: windowSize.width <= 980
+							: windowSize.width <= md
 							? 3
-							: windowSize.width <= 10242
+							: windowSize.width <= lg
 							? 4
-							: windowSize.width <= 1200
+							: windowSize.width <= ls
 							? 5
 							: 6
 					}
