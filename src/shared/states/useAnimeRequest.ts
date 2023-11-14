@@ -26,6 +26,7 @@ interface IRequestProps {
 	setItemAnime: (newItem: AnimeData | null) => void
 	clearItem: () => void
 	clearAllItems: () => void
+	clearAnimeData: () => void
 	createdAt: string
 	calculateIntervalBetweenDates: (date: Date) => { DAYS: number } | void
 }
@@ -53,6 +54,7 @@ export const useDataAnime = create(
 			setItemAnime: (newItem: AnimeData | null) => set(() => ({ itemAnime: newItem })),
 			clearItem: () => set(() => ({ itemAnime: null })),
 			clearAllItems: () => set(() => ({ animeList: [] })),
+			clearAnimeData: () => set(() => ({ animeData: [] })),
 			calculateIntervalBetweenDates(date: Date) {
 				const CURRENT_DATE = new Date(get().createdAt)
 				const TIMES_TAMP_FIRST_DATE = date.getTime();

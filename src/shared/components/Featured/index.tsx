@@ -38,17 +38,17 @@ interface IFeaturedProps {
 export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 	const { onClose, isOpen, onOpen } = useDisclosure();
 	const { itemAnime, setItemAnime } = useDataAnime();
-	const [autoplay, setAutoplay] = useState(true)
+	const [autoplay, setAutoplay] = useState(true);
 
-	const onCloseTrailer = () =>{
-		onClose()
-		setItemAnime(null)
-		setAutoplay(true)
-	}
+	const onCloseTrailer = () => {
+		onClose();
+		setItemAnime(null);
+		setAutoplay(true);
+	};
 
-	const onOpenTrailer = () =>{
-		onOpen()
-	}
+	const onOpenTrailer = () => {
+		onOpen();
+	};
 
 	return (
 		<>
@@ -63,7 +63,12 @@ export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 			>
 				{items.map((item, key) => (
 					<SwiperSlide key={key} style={{ overflow: "visible" }}>
-						<FeaturedScreen item={item} setAutoplay={setAutoplay} onOpenTrailer={onOpenTrailer} currentAnime={key}/>
+						<FeaturedScreen
+							item={item}
+							setAutoplay={setAutoplay}
+							onOpenTrailer={onOpenTrailer}
+							currentAnime={key}
+						/>
 					</SwiperSlide>
 				))}
 			</Swiper>
