@@ -10,7 +10,7 @@ import { useToastMessage } from "../../shared/chakra-ui-api/toast";
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
 import jikanDB from "../../jikanDB";
 
-export default function Home(): JSX.Element {
+export const Home:React.FC = () => {
 	const {
 		calculateIntervalBetweenDates,
 		setAnimeData,

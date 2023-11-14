@@ -2,9 +2,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { BaseLayoutHomePage } from "../pages/BaseLayoutHomePage";
 import { ROUTE_LOGIN } from "../shared/utils/constants";
-import { Search } from "../pages/Search";
-import { Auth } from "../pages/Auth";
-import Home from "../pages/Home";
+import { Auth, Home, Search } from "../pages";
+
 
 export const AppRoute = () => {
 	const router = createBrowserRouter([
