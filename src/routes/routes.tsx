@@ -8,7 +8,7 @@ import { Auth, Home, Search } from "../pages";
 export const AppRoute = () => {
 	const router = createBrowserRouter([
 		{
-			path: "/",
+			path: "/myAnimeLib",
 			element: (
 				<BaseLayoutHomePage>
 					<Home />
