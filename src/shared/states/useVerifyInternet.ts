@@ -6,6 +6,6 @@ interface IUseVerifyInternetProps{
 }
 
 export const useVerifyInternet = create<IUseVerifyInternetProps>()((set) => ({
-	isOnline: false,
+	isOnline: true,
 	setIsOnline: (isOnline: boolean) => set(() => ({ isOnline: isOnline }))
 }))
