@@ -56,13 +56,13 @@ export const Featured: React.FC<IFeaturedProps> = ({ items, type }) => {
 	}
 	const [description, setDescription] = useState("");
 
-	/* useEffect(() => {
+	useEffect(() => {
 		if (item.synopsis.length > 300) {
 			setDescription(item.synopsis.substring(0, 300) + "...");
 		} else {
 			setDescription(item.synopsis);
 		}
-	}, [item.synopsis]); */
+	}, [item.synopsis]);
 
 	const handleOpenTrailler = () => {
 		onOpen();
