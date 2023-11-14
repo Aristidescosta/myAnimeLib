@@ -9,6 +9,7 @@ import { useDataAnime } from "../../shared/states/useAnimeRequest";
 import { useToastMessage } from "../../shared/chakra-ui-api/toast";
 import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
 import jikanDB from "../../jikanDB";
+import { AnimeData } from "../../shared/types/AnimeData";
 
 export const Home: React.FC = () => {
 	const {
@@ -16,7 +17,7 @@ export const Home: React.FC = () => {
 		setAnimeData,
 		setAnimeList,
 		animeList,
-		animeData
+		animeData,
 	} = useDataAnime();
 	const [isLoading, setIsLoading] = useState(true);
 
@@ -63,27 +64,35 @@ export const Home: React.FC = () => {
 		}
 	}, [isOnline]);
 
+	const addDataOnAnimeData = (
+		response: {
+			slug: string;
+			title: string;
+			items: any;
+		}[]
+	) => {
+		let animeDataCount = 0;
+		const ANIME_DATA: AnimeData[] = []
+		while (animeDataCount < 4) {
+			const RANDOM_CHOISE_SLUGS = Math.floor(Math.random() * response.length);
+
+			const RANDOM_CHOISE = Math.floor(
+				Math.random() * response[RANDOM_CHOISE_SLUGS].items.data.length
+			);
+
+			const choice = response[RANDOM_CHOISE_SLUGS].items.data[RANDOM_CHOISE];
+			if (!animeData.includes(choice)) {
+				animeDataCount++;
+				ANIME_DATA.push(choice)
+			}
+		}
+		setAnimeData(ANIME_DATA)
+	};
+
 	const getAnimeList = () => {
-		console.log("Fui convocado")
 		jikanDB
 			.getAnimeList()
 			.then((response) => {
-				let animeDataCount = 0;
-				while (animeDataCount < 4) {
-					const RANDOM_CHOISE_SLUGS = Math.floor(
-						Math.random() * response.length
-					);
-
-					const RANDOM_CHOISE = Math.floor(
-						Math.random() * response[RANDOM_CHOISE_SLUGS].items.data.length
-					);
-
-					const choice = response[RANDOM_CHOISE_SLUGS].items.data[RANDOM_CHOISE];
-					if (!animeData.includes(choice)) {
-						setAnimeData([...animeData, choice]);
-						animeDataCount++;
-					}
-				}
 				setAnimeList(response);
 				setIsLoading(false);
 			})
@@ -105,6 +114,7 @@ export const Home: React.FC = () => {
 				setIsLoading(false);
 			}
 		}
+		addDataOnAnimeData(animeList);
 	}, []);
 	return (
 		<>
@@ -125,7 +135,7 @@ export const Home: React.FC = () => {
 				</Box>
 			) : animeData.length > 0 ? (
 				<>
-					<Featured items={animeData}/>
+					<Featured items={animeData} />
 					<Box>
 						<Box as="section">
 							{animeList.length > 0 &&
