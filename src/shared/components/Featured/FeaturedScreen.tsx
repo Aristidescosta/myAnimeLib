@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { BsFillPlayFill } from "react-icons/bs";
 import {
 	Box,
 	Flex,
@@ -6,15 +7,12 @@ import {
 	IconButton,
 	Text,
 	Tooltip,
-	useMediaQuery,
-	useTheme,
 } from "@chakra-ui/react";
 
+import { useWindowMeasure } from "../../states/useWindowMeasure";
 import { useDataAnime } from "../../states/useAnimeRequest";
 import { APP_VARIANT_COLOR } from "../../utils/constants";
 import { AnimeData } from "../../types/AnimeData";
-import { BsFillPlayFill } from "react-icons/bs";
-import { useWindowMeasure } from "../../states/useWindowMeasure";
 
 interface IFeaturedScreenProps {
 	item: AnimeData;
