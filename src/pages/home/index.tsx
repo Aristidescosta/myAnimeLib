@@ -70,7 +70,6 @@ export const Home: React.FC = () => {
   }, [isOnline]);
 
   const addDataOnAnimeData = (response: IAnimeListProps[]) => {
-    console.log("isto aqui está retornando isto: ", response);
     let animeDataCount = 0;
     const ANIME_DATA: AnimeData[] = [];
     while (animeDataCount < 4) {
@@ -94,6 +93,7 @@ export const Home: React.FC = () => {
       jikanDB
         .getAnimeList()
         .then((response) => {
+          addDataOnAnimeData(response);
           resolve(response);
         })
         .catch(() => {
@@ -105,7 +105,14 @@ export const Home: React.FC = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    if (animeList.length === 0 || animeData.length === 0) {
+
+    if (
+      !animeList ||
+      animeList.length === 0 ||
+      !animeData ||
+      animeData.length === 0
+    ) {
+      console.log("Passei aqui");
       getAnimeList()
         .then((response) => {
           setAnimeList(response);
@@ -135,7 +142,7 @@ export const Home: React.FC = () => {
           });
       } else {
         setIsLoading(false);
-		addDataOnAnimeData(animeList);
+        addDataOnAnimeData(animeList);
       }
     }
   }, []);
