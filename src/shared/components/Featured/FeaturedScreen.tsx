@@ -21,7 +21,7 @@ interface IFeaturedScreenProps {
   currentAnime: number;
 }
 
-interface WindowSize {
+export interface WindowSize {
   width: number;
   height: number;
 }
