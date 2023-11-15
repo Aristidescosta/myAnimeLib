@@ -25,6 +25,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 			onClick={() => handleClick(item)}
 			mr={2}
 			boxShadow={"2xl"}
+			mb={20}
 		>
 			<Flex>
 				<Image

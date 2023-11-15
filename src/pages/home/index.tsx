@@ -112,7 +112,6 @@ export const Home: React.FC = () => {
       !animeData ||
       animeData.length === 0
     ) {
-      console.log("Passei aqui");
       getAnimeList()
         .then((response) => {
           setAnimeList(response);
