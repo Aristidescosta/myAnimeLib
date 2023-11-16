@@ -179,7 +179,7 @@ export const Home: React.FC = () => {
           </Box>
         </>
       ) : (
-        <EmptyMessage message="Tivemos um erro interno, por favor recarrege a página!" />
+        <EmptyMessage message="Tivemos um pequeno erro interno, por favor recarrege a página!" />
       )}
     </>
   );
