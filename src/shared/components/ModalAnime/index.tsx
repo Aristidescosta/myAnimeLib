@@ -16,7 +16,7 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@chakra-ui/react";
-import { APP_COLOR } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
 
 interface IModalAnimeProps {
 	item: AnimeData;
@@ -52,7 +52,7 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 			<DrawerContent>
 				<DrawerCloseButton bgColor={APP_COLOR}/>
 
-				<DrawerBody bgColor={"blackAlpha.300"} p={0}>
+				<DrawerBody bgColor={"blue.900"} p={0} >
 					<Box
 						display={"flex"}
 						h={"full"}
@@ -61,13 +61,14 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 					>
 						<Box flex={isSm[0] ? 4 : 2} h={isSm[0] ? "30%" : "full"}>
 							<Image
-								src={item.images.webp.image_url}
+								src={item.images.webp.large_image_url}
 								bgRepeat={"no-repeat"}
 								bgSize={"cover"}
 								borderTopRightRadius={15}
 								borderBottomRightRadius={15}
 								zIndex={99999}
 								boxShadow="dark-lg"
+								objectFit={"cover"}
 								w={"full"}
 								h={"full"}
 							/>
