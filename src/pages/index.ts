@@ -1,3 +1,3 @@
-export * from "./Auth/index"
-export * from "./Home/index"
-export * from "./Search/index"
+export * from "./Search"
+export * from "./Auth"
+export * from "./home"
