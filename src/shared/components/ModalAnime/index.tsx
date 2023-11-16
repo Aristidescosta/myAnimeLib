@@ -16,9 +16,11 @@ import {
   useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
-import { APP_COLOR } from "../../utils/constants";
+
+
 import { useWindowMeasure } from "../../states/useWindowMeasure";
 import { WindowSize } from "../Featured/FeaturedScreen";
+import { APP_COLOR } from "../../utils/constants";
 
 interface IModalAnimeProps {
   item: AnimeData;
@@ -42,7 +44,7 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
   const STUDIOS = item.studios.map((studio) => studio.name);
   const PRODUCERS = item.producers.map((producer) => producer.name);
 
-  const { lg, ls, md, sm, xs } = useWindowMeasure();
+  const { md } = useWindowMeasure();
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -82,17 +84,13 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
             w={"full"}
             flexDir={isSm[0] ? "column" : "row"}
           >
-            <Box
-              flex={2}
-              /* h={isSm[0] ? "30%" : "full"} */
-			  h={windowSize.width >= md ? "full" : "30%"}
-            >
+            <Box flex={2} h={windowSize.width >= md ? "full" : "30%"}>
               <Image
                 src={item.images.webp.large_image_url}
                 bgRepeat={"no-repeat"}
                 bgSize={"cover"}
-                borderTopRightRadius={windowSize.width <= xs ? 0 : 15}
-                borderBottomRightRadius={windowSize.width <= xs ? 0 : 15}
+                borderTopRightRadius={windowSize.width >= md ? 15 : 0}
+                borderBottomRightRadius={windowSize.width >= md ? 15 : 0}
                 zIndex={99999}
                 boxShadow="dark-lg"
                 objectFit={"cover"}
@@ -101,20 +99,20 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
               />
             </Box>
             <Box
-              h={isSm[0] ? "70%" : "full"}
               display={"flex"}
               justifyContent={"center"}
               alignItems={"center"}
-              flex={isSm[0] ? 2 : 1}
+              flex={1}
             >
               <Box
                 color={APP_COLOR}
                 mr={5}
-                borderTopRightRadius={windowSize.width <= xs ? 0 : 8}
-                borderBottomRightRadius={windowSize.width <= xs ? 0 : 8}
+                borderTopRightRadius={windowSize.width >= md ? 8 : 0}
+                borderBottomRightRadius={windowSize.width >= md ? 8 : 0}
                 boxShadow="2xl"
                 p="6"
                 bg="white"
+                w={"full"}
               >
                 <Text as={"h4"} fontWeight={"bold"}>
                   {item.title}
