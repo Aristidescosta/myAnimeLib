@@ -20,10 +20,10 @@ export const useWindowMeasure = create<IWindowMeasureProps>()((set) => ({
 		width: 0,
 		height: 0
 	},
-	xs: 480,
-	sm: 768,
-	md: 1024,
-	lg: 1200,
-	ls: 1201,
+	xs: 321,
+	sm: 376,
+	md: 426,
+	lg: 769,
+	ls: 1025,
 	setWindowSize: (windowSize: WindowSize) => set(() => ({ windowSize }))
 }))
