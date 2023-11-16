@@ -3,16 +3,12 @@ import {
   Box,
   Button,
   Flex,
-  FormControl,
   HStack,
-  Input,
-  InputGroup,
-  InputRightElement,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Select,
   Text,
   useBreakpointValue,
   useDisclosure,
@@ -21,12 +17,11 @@ import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
-import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { APP_COLOR, APP_VARIANT_COLOR, OPTIONS } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
 import { useTheBounce } from "../../hooks/hooks";
-import { WindowSize } from "../Featured/FeaturedScreen";
-import { useWindowMeasure } from "../../states/useWindowMeasure";
+import { SearchForm } from "../../forms/SearchForm";
 
 interface IHeader {
   navbar: TNavbarItem[];
@@ -41,11 +36,6 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
   const [choice, setChoice] = useState("all");
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
-  const { md } = useWindowMeasure();
-  const [windowSize, setWindowSize] = useState<WindowSize>({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -59,26 +49,11 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
   };
 
   useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [setWindowSize]);
-
-  useEffect(() => {
     theBounce(() => {
       if (!search) return;
       navigate(`/search?q=${search}`);
     });
-  }, []);
+  });
 
   return (
     <Box>
@@ -94,38 +69,39 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
             AnimeLib
           </Text>
         </Box>
+
         <NavigationBar items={navbar} isBase={isBase || false} />
+
         <HStack display={"flex"} justify={"space-between"}>
-          <form onSubmit={handleSubmit}>
-            <FormControl display={"flex"} gap={2}>
-              <Select
-                defaultValue={choice}
-                onChange={(e) => handleChangeChoice(e.target.value)}
-                size={windowSize.width <= md ? "xs" : "md"}
-              >
-                {OPTIONS.map((optionSelect, key) => (
-                  <option
-                    key={key}
-                    style={{ color: APP_COLOR }}
-                    value={optionSelect.value}
-                  >
-                    {optionSelect.title}
-                  </option>
-                ))}
-              </Select>
-              <InputGroup size={windowSize.width <= md ? "xs" : "md"}>
-                <InputRightElement pointerEvents={"none"}>
-                  <SearchIcon color={"grey.300"} />
-                </InputRightElement>
-                <Input
-                  type="search"
-                  placeholder="Pesquise por um anime, mangá ou personagem"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+          {isBase ? (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<SearchIcon />}
+                variant="outline"
+				borderColor={APP_COLOR}
+				color={"#FFF"}
+              />
+              <MenuList zIndex={99999999} color={APP_COLOR} p={6}>
+                <SearchForm
+                  handleChangeChoice={handleChangeChoice}
+                  handleSubmit={handleSubmit}
+                  search={search}
+                  setSearch={setSearch}
+                  choice={choice}
                 />
-              </InputGroup>
-            </FormControl>
-          </form>
+              </MenuList>
+            </Menu>
+          ) : (
+            <SearchForm
+              handleChangeChoice={handleChangeChoice}
+              handleSubmit={handleSubmit}
+              search={search}
+              setSearch={setSearch}
+              choice={choice}
+            />
+          )}
 
           {user ? (
             <Menu onClose={onClose}>
@@ -150,7 +126,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                 />
               </Flex>
 
-              <MenuList zIndex={99999999} color={APP_COLOR}>
+              <MenuList zIndex={99999999} color={APP_COLOR} p={0}>
                 <MenuItem as={"a"} href="/perfil">
                   Perfil
                 </MenuItem>
@@ -164,7 +140,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
               border={`1px solid ${APP_VARIANT_COLOR}`}
               color={APP_VARIANT_COLOR}
               borderRadius={"8"}
-              display={["none", "flex"]}
+              /* display={["none", "flex"]} */
               alignSelf={"center"}
               background="transparent"
               _hover={{
