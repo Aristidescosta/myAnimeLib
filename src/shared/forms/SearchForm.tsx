@@ -13,6 +13,7 @@ import { APP_COLOR, OPTIONS } from "../utils/constants";
 interface ISearchFormProps {
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
   handleChangeChoice: (choice: string) => void;
+  isMobile: boolean;
   search: string;
   choice: string;
   setSearch: (search: string) => void;
@@ -22,6 +23,7 @@ export const SearchForm: React.FC<ISearchFormProps> = ({
   handleChangeChoice,
   handleSubmit,
   setSearch,
+  isMobile,
   search,
   choice,
 }) => {
@@ -31,8 +33,8 @@ export const SearchForm: React.FC<ISearchFormProps> = ({
         <Select
           defaultValue={choice}
           onChange={(e) => handleChangeChoice(e.target.value)}
-          size={"xs"}
-          w={"54"}
+          size={isMobile ? "xs" : "lg"}
+          w={isMobile ? "54" : undefined}
         >
           {OPTIONS.map((optionSelect, key) => (
             <option
@@ -44,7 +46,7 @@ export const SearchForm: React.FC<ISearchFormProps> = ({
             </option>
           ))}
         </Select>
-        <InputGroup size={"xs"} w={"54"}>
+        <InputGroup size={isMobile ? "xs" : "lg"} w={isMobile ? "54" : undefined}>
           <InputRightElement pointerEvents={"none"}>
             <SearchIcon color={"grey.300"} />
           </InputRightElement>

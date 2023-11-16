@@ -80,8 +80,8 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                 aria-label="Options"
                 icon={<SearchIcon />}
                 variant="outline"
-				borderColor={APP_COLOR}
-				color={"#FFF"}
+                borderColor={APP_COLOR}
+                color={"#FFF"}
               />
               <MenuList zIndex={99999999} color={APP_COLOR} p={6}>
                 <SearchForm
@@ -90,6 +90,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                   search={search}
                   setSearch={setSearch}
                   choice={choice}
+                  isMobile={isBase || false}
                 />
               </MenuList>
             </Menu>
@@ -100,18 +101,19 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
               search={search}
               setSearch={setSearch}
               choice={choice}
+              isMobile={isBase || false}
             />
           )}
 
-          {user ? (
+          {!user ? (
             <Menu onClose={onClose}>
               <Flex alignItems={"center"} justifyContent={"center"}>
-                <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
+                <Flex alignItems={"center"} justifyContent={"center"}>
                   <Avatar
                     name={username}
                     src="https://github.com/Aristidescosta.png"
                   />
-                  <Text fontSize={"small"}>Aristides Costa</Text>
+                  { !isBase && <Text fontSize={"small"}>Aristides Costa</Text> }
                 </Flex>
                 <MenuButton
                   as={Button}
