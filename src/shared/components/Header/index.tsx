@@ -23,8 +23,10 @@ import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR, OPTIONS } from "../../utils/constants";
 import { useTheBounce } from "../../hooks/hooks";
+import { WindowSize } from "../Featured/FeaturedScreen";
+import { useWindowMeasure } from "../../states/useWindowMeasure";
 
 interface IHeader {
   navbar: TNavbarItem[];
@@ -36,15 +38,15 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
   const username = user ? user.split("@")[0] : null;
   const { theBounce } = useTheBounce();
   const { onClose } = useDisclosure();
-  const [choice, setChoice] = useState("anime")
-
-
-  const handleChangeChoice = (choice: string) =>{
-	setChoice(choice)
-  }
-
+  const [choice, setChoice] = useState("all");
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+  const { md } = useWindowMeasure();
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!search) return;
@@ -52,12 +54,31 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
     setSearch("");
   };
 
+  const handleChangeChoice = (choice: string) => {
+    setChoice(choice);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setWindowSize]);
+
   useEffect(() => {
     theBounce(() => {
       if (!search) return;
       navigate(`/search?q=${search}`);
     });
-  }, [theBounce, search]);
+  }, []);
 
   return (
     <Box>
@@ -77,12 +98,22 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
         <HStack display={"flex"} justify={"space-between"}>
           <form onSubmit={handleSubmit}>
             <FormControl display={"flex"} gap={2}>
-              <Select defaultValue={choice} onChange={(e) => handleChangeChoice(e.target.value)}>
-                <option style={{ color: APP_COLOR }} value="anime">Anime</option>
-                <option style={{ color: APP_COLOR }} value="manga">Mangá</option>
-                <option style={{ color: APP_COLOR }} value="character">Personagem</option>
+              <Select
+                defaultValue={choice}
+                onChange={(e) => handleChangeChoice(e.target.value)}
+                size={windowSize.width <= md ? "xs" : "md"}
+              >
+                {OPTIONS.map((optionSelect, key) => (
+                  <option
+                    key={key}
+                    style={{ color: APP_COLOR }}
+                    value={optionSelect.value}
+                  >
+                    {optionSelect.title}
+                  </option>
+                ))}
               </Select>
-              <InputGroup>
+              <InputGroup size={windowSize.width <= md ? "xs" : "md"}>
                 <InputRightElement pointerEvents={"none"}>
                   <SearchIcon color={"grey.300"} />
                 </InputRightElement>
