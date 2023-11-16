@@ -16,7 +16,7 @@ import {
 	useMediaQuery,
 	useTheme,
 } from "@chakra-ui/react";
-import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
+import { APP_COLOR } from "../../utils/constants";
 
 interface IModalAnimeProps {
 	item: AnimeData;
