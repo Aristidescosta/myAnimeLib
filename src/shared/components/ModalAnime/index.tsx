@@ -50,18 +50,18 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
 		>
 			<DrawerOverlay />
 			<DrawerContent>
-				<DrawerCloseButton />
+				<DrawerCloseButton bgColor={APP_COLOR}/>
 
-				<DrawerBody bgColor={APP_COLOR} p={0}>
+				<DrawerBody bgColor={"blackAlpha.300"} p={0}>
 					<Box
 						display={"flex"}
 						h={"full"}
 						w={"full"}
 						flexDir={isSm[0] ? "column" : "row"}
 					>
-						<Box flex={isSm[0] ? 1 : 2} h={isSm[0] ? "30%" : "full"}>
+						<Box flex={isSm[0] ? 4 : 2} h={isSm[0] ? "30%" : "full"}>
 							<Image
-								src={item.images.webp.large_image_url}
+								src={item.images.webp.image_url}
 								bgRepeat={"no-repeat"}
 								bgSize={"cover"}
 								borderTopRightRadius={15}
