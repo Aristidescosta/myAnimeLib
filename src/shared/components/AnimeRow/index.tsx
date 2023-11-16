@@ -70,15 +70,15 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
           spaceBetween={50}
           slidesPerView={
             windowSize.width <= xs
-              ? 1.5
+              ? 1.2
               : windowSize.width <= sm
-              ? 2
+              ? 1.5
               : windowSize.width <= md
-              ? 3
+              ? 1.8
               : windowSize.width <= lg
-              ? 4
+              ? 3.5
               : windowSize.width <= ls
-              ? 5
+              ? 4.5
               : 6
           }
           style={{ padding: 30 }}
