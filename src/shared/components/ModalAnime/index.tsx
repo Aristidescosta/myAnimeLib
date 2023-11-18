@@ -9,18 +9,18 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
+  DrawerFooter,
   DrawerOverlay,
-  Image,
   Tag,
   Text,
   useMediaQuery,
   useTheme,
 } from "@chakra-ui/react";
 
-
 import { useWindowMeasure } from "../../states/useWindowMeasure";
 import { WindowSize } from "../Featured/FeaturedScreen";
 import { APP_COLOR } from "../../utils/constants";
+import { useDataAnime } from "../../states/useAnimeRequest";
 
 interface IModalAnimeProps {
   item: AnimeData;
@@ -38,6 +38,8 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
   const breakpoints = {
     sm: theme.breakpoints["sm"],
   };
+
+  const { setItemAnime } = useDataAnime();
 
   const isSm = useMediaQuery(`(max-width: ${breakpoints.sm})`);
 
@@ -65,12 +67,19 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
     };
   }, [setWindowSize]);
 
+  const handleButtonClose = () => {
+    setItemAnime(null);
+    onClose();
+  };
+
+  console.log(windowSize.width <= md);
+
   return (
     <Drawer
       isOpen={isOpen}
-      placement="right"
+      /* placement="right" */
       onClose={onClose}
-      size={"xl"}
+      size={windowSize.width <= md ? "full" : "xl"}
       /* finalFocusRef={btnRef} */
     >
       <DrawerOverlay />
@@ -84,29 +93,26 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
             w={"full"}
             flexDir={isSm[0] ? "column" : "row"}
           >
-            <Box flex={2} h={windowSize.width >= md ? "full" : "30%"}>
-              <Image
-                src={item.images.webp.large_image_url}
-                bgRepeat={"no-repeat"}
-                bgSize={"cover"}
-                borderTopRightRadius={windowSize.width >= md ? 15 : 0}
-                borderBottomRightRadius={windowSize.width >= md ? 15 : 0}
-                zIndex={99999}
-                boxShadow="dark-lg"
-                objectFit={"cover"}
-                w={"full"}
-                h={"full"}
-              />
-            </Box>
+            <Box
+              bgImage={item.images.webp.large_image_url}
+              bgRepeat={"no-repeat"}
+              bgSize={"cover"}
+              bgPos={"center"}
+              borderTopRightRadius={windowSize.width >= md ? 15 : 0}
+              borderBottomRightRadius={windowSize.width >= md ? 15 : 0}
+              zIndex={99999}
+              boxShadow="dark-lg"
+              objectFit={"cover"}
+              w={"full"}
+              h={"full"}
+            />
             <Box
               display={"flex"}
               justifyContent={"center"}
               alignItems={"center"}
-              flex={1}
             >
               <Box
                 color={APP_COLOR}
-                mr={5}
                 borderTopRightRadius={windowSize.width >= md ? 8 : 0}
                 borderBottomRightRadius={windowSize.width >= md ? 8 : 0}
                 boxShadow="2xl"
@@ -114,7 +120,7 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
                 bg="white"
                 w={"full"}
               >
-                <Text as={"h4"} fontWeight={"bold"}>
+                <Text as={"h1"} fontWeight={"bold"}>
                   {item.title}
                 </Text>
                 <Box
@@ -124,7 +130,7 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
                   p={2}
                   gap={3}
                 >
-                  <Box>
+                  <Box fontSize={windowSize.width <= md ? 12 : 18}>
                     <Tag bgColor={APP_COLOR} color={"#FFF"}>
                       Score
                     </Tag>
@@ -181,6 +187,14 @@ export const ModalAnime: React.FC<IModalAnimeProps> = ({
             </Box>
           </Box>
         </DrawerBody>
+
+        {windowSize.width <= md && (
+          <DrawerFooter>
+            <Button bg={APP_COLOR} color={"#FFF"} onClick={handleButtonClose}>
+              Fechar
+            </Button>
+          </DrawerFooter>
+        )}
       </DrawerContent>
     </Drawer>
   );
