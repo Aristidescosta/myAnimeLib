@@ -113,7 +113,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                     name={username}
                     src="https://github.com/Aristidescosta.png"
                   />
-                  { !isBase && <Text fontSize={"small"}>Aristides Costa</Text> }
+                  { !isBase && <Text fontSize={"small"}>{username}</Text> }
                 </Flex>
                 <MenuButton
                   as={Button}

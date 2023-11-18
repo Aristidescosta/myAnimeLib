@@ -4,16 +4,16 @@ import { AuthScreen } from "./AuthScreen";
 
 export const Auth = () => {
 	return (
-		<Box
-			m={0}
-			bgPos={"center"}
-			bgSize={"cover"}
-			bgRepeat={"no-repeat"}
-			bgImg={"/banner.jpg"}
-			h={"100vh"}
-			w={"100vw"}
-			overflow={"hidden"}
-		>
+		<Box h={"full"} w={"full"} pos={"relative"}>
+			<Box
+				bgPos={"center"}
+				bgSize={"cover"}
+				bgRepeat={"no-repeat"}
+				bgImg={"/banner.jpg"}
+				h={"100vh"}
+				w={"100vw"}
+				filter={"blur(4px)"}
+			/>
 			<AuthScreen />
 		</Box>
 	);

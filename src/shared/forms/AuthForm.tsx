@@ -1,13 +1,27 @@
-import { Button, FormControl, FormLabel, Input, Spacer, Stack } from "@chakra-ui/react";
+import {
+	Button,
+	FormControl,
+	FormLabel,
+	Input,
+	Spacer,
+	Stack,
+	Text,
+} from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { APP_COLOR, APP_VARIANT_COLOR } from "../utils/constants";
+import { AuthenticationType } from "../types/AuthenticationType";
 
 interface IAuthForm {
 	loading: boolean;
-	handleLogin: (email: string, password: string) => void;
+	handleLogin: (user: AuthenticationType, confirmPassword: string) => void;
+	onChangeRegistrationInformation: () => void;
 }
 
-export const AuthForm: React.FC<IAuthForm> = ({ loading, handleLogin }) => {
+export const AuthForm: React.FC<IAuthForm> = ({
+	loading,
+	handleLogin,
+	onChangeRegistrationInformation,
+}) => {
 	const REF_EMAIL = useRef<HTMLInputElement>(null);
 	const REF_PASSWORD = useRef<HTMLInputElement>(null);
 
@@ -21,9 +35,11 @@ export const AuthForm: React.FC<IAuthForm> = ({ loading, handleLogin }) => {
 			(e as React.KeyboardEvent).key === "Enter" ||
 			(e as React.KeyboardEvent).key === undefined
 		) {
-			if (EMAIL && PASSWORD) {
-				handleLogin(EMAIL, PASSWORD);
-			}
+			const USER = {
+				email: EMAIL,
+				password: PASSWORD,
+			};
+			handleLogin(USER, PASSWORD);
 		}
 	}
 
@@ -76,6 +92,16 @@ export const AuthForm: React.FC<IAuthForm> = ({ loading, handleLogin }) => {
 				>
 					ENTRAR
 				</Button>
+				<Text>
+					Ainda não possuí uma conta?{" "}
+					<Text
+						onClick={onChangeRegistrationInformation}
+						cursor={"pointer"}
+						color={APP_COLOR}
+					>
+						Clica aqui
+					</Text>{" "}
+				</Text>
 			</Stack>
 		</Stack>
 	);
