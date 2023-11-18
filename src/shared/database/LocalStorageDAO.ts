@@ -1,21 +1,10 @@
 const storage = window.localStorage;
 
 export enum StorageEnum {
-	RestaurantData = 'restaurantData',
-	Restaurants = 'restaurants',
-	Login = 'login',
 	UserEmail = 'userEmail',
-	customerQrCodeReadId = 'customerQrCodeReadId',
-	RestaurantStorage = 'restaurantStorage',
-	PositionPriceLine = 'positionPriceLine',
-	TypeRestaurantInUse = 'typeRestaurantInUse',
-	RestaurantSettingPriceLine = 'restaurantSettingPriceLine',
-	RestaurantSettings = 'restaurantSettings',
-	WarehouseData = 'warehouseData',
 	UserAutenticatePermissions = 'userAutenticatePermissions',
-	ModuleInUse = 'moduleInUse',
-	UserFirstLogin = 'userFirstLogin',
-	UserName = 'userName'
+	UserName = 'userName',
+	Login = 'login',
 }
 
 export function saveData(key: string, data: unknown) {

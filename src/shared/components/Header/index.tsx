@@ -105,7 +105,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
             />
           )}
 
-          {!user ? (
+          {user ? (
             <Menu onClose={onClose}>
               <Flex alignItems={"center"} justifyContent={"center"}>
                 <Flex alignItems={"center"} justifyContent={"center"}>
@@ -150,7 +150,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
               }}
               fontSize={["2px, 8px, 19px"]}
               as={Link}
-              to={"/entrar"}
+              to={"/myAnimeLib/entrar"}
             >
               Entrar
             </Button>
