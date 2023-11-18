@@ -150,7 +150,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
               }}
               fontSize={["2px, 8px, 19px"]}
               as={Link}
-              to={"/entrar"}
+              to={"/myAnimeLib/entrar"}
             >
               Entrar
             </Button>

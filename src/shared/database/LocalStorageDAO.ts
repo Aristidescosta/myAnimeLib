@@ -3,7 +3,8 @@ const storage = window.localStorage;
 export enum StorageEnum {
 	UserEmail = 'userEmail',
 	UserAutenticatePermissions = 'userAutenticatePermissions',
-	UserName = 'userName'
+	UserName = 'userName',
+	Login = 'login',
 }
 
 export function saveData(key: string, data: unknown) {
