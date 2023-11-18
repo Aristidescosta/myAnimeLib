@@ -2,13 +2,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import React, { useState } from "react";
 import {
-	AspectRatio,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalHeader,
-	ModalOverlay,
 	useDisclosure,
 } from "@chakra-ui/react";
 
@@ -26,10 +19,10 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 
-import { APP_COLOR } from "../../utils/constants";
+import { useDataAnime } from "../../states/useAnimeRequest";
 import { AnimeData } from "../../types/AnimeData";
 import { FeaturedScreen } from "./FeaturedScreen";
-import { useDataAnime } from "../../states/useAnimeRequest";
+import { AnimeTrailer } from "../AnimeTrailer";
 
 interface IFeaturedProps {
 	items: AnimeData[];
@@ -62,7 +55,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 				loop
 			>
 				{items.map((item, key) => (
-					<SwiperSlide key={key} style={{ overflow: "visible" }}>
+					<SwiperSlide key={key}>
 						<FeaturedScreen
 							item={item}
 							setAutoplay={setAutoplay}
@@ -74,27 +67,12 @@ export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 			</Swiper>
 
 			{itemAnime && (
-				<Modal onClose={onCloseTrailer} isOpen={isOpen} size={"3xl"}>
-					<ModalOverlay
-						bg="none"
-						backdropFilter="auto"
-						backdropInvert="20%"
-						backdropBlur="2px"
-					/>
-					<ModalContent>
-						<ModalHeader color={APP_COLOR}>{itemAnime.title}</ModalHeader>
-						<ModalCloseButton color={APP_COLOR} />
-						<ModalBody bgColor={APP_COLOR} w={"full"} p={0}>
-							<AspectRatio w={"full"} h={"full"} ratio={1}>
-								<iframe
-									title={itemAnime.title}
-									src={itemAnime.trailer.embed_url}
-									allowFullScreen
-								/>
-							</AspectRatio>
-						</ModalBody>
-					</ModalContent>
-				</Modal>
+				<AnimeTrailer
+					isOpen={isOpen}
+					onCloseTrailer={onCloseTrailer}
+					title={itemAnime.title}
+					url={itemAnime.trailer.embed_url}
+				/>
 			)}
 		</>
 	);
