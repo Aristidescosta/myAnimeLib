@@ -9,14 +9,14 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
-import { APP_COLOR } from "../utils/constants";
-import { AuthenticationType } from "../types/AuthenticationType";
+import { APP_COLOR, APP_VARIANT_COLOR } from "../utils/constants";
+import { TUserProps } from "../types/AuthenticationType";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdEmail, MdPassword } from "react-icons/md";
 
 interface AuthFormSignUp {
 	loading: boolean;
-	handleLogin: (user: AuthenticationType, confirmPassword: string) => void;
+	handleLogin: (user: TUserProps, confirmPassword: string) => void;
 	onChangeRegistrationInformation: () => void;
 }
 
@@ -27,22 +27,30 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 }) => {
 	const REF_EMAIL = useRef<HTMLInputElement>(null);
 	const REF_PASSWORD = useRef<HTMLInputElement>(null);
+	const REF_RE_PASSWORD = useRef<HTMLInputElement>(null);
+	const REF_NAME = useRef<HTMLInputElement>(null);
+	const REF_USER_NAME = useRef<HTMLInputElement>(null);
 
 	function handleSubmit(
 		e: React.KeyboardEvent | React.MouseEvent<HTMLButtonElement, MouseEvent>
 	) {
 		const EMAIL = REF_EMAIL.current?.value as string;
 		const PASSWORD = REF_PASSWORD.current?.value as string;
+		const RE_REPASSWORD = REF_RE_PASSWORD.current?.value as string;
+		const NAME = REF_NAME.current?.value as string;
+		const USER_NAME = REF_USER_NAME.current?.value as string;
 
 		if (
 			(e as React.KeyboardEvent).key === "Enter" ||
 			(e as React.KeyboardEvent).key === undefined
 		) {
-			const USER = {
+			const USER: TUserProps = {
 				email: EMAIL,
 				password: PASSWORD,
+				name: NAME,
+				userName: USER_NAME,
 			};
-			handleLogin(USER, PASSWORD);
+			handleLogin(USER, RE_REPASSWORD);
 		}
 	}
 
@@ -55,7 +63,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<FaCircleUser />
 						</InputLeftElement>
-						<Input type="text" placeholder="Nome" />
+						<Input type="text" ref={REF_NAME} onKeyDown={handleSubmit} placeholder="Nome" />
 					</InputGroup>
 				</FormControl>
 
@@ -65,7 +73,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<FaCircleUser />
 						</InputLeftElement>
-						<Input type="text" placeholder="Nome de usuário" />
+						<Input type="text" ref={REF_USER_NAME} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
 					</InputGroup>
 				</FormControl>
 
@@ -75,7 +83,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<MdEmail />
 						</InputLeftElement>
-						<Input type="text" placeholder="Nome" />
+						<Input type="email" ref={REF_EMAIL} onKeyDown={handleSubmit} placeholder="Nome" />
 					</InputGroup>
 				</FormControl>
 
@@ -85,7 +93,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<MdPassword />
 						</InputLeftElement>
-						<Input type="text" placeholder="Nome de usuário" />
+						<Input type="text" ref={REF_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
 					</InputGroup>
 				</FormControl>
 			</Grid>
@@ -96,12 +104,23 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 					<InputLeftElement pointerEvents={"none"}>
 						<MdPassword />
 					</InputLeftElement>
-					<Input type="text" placeholder="Nome de usuário" />
+					<Input type="text" ref={REF_RE_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
 				</InputGroup>
 			</FormControl>
 
 			<FormControl id="userName" mt={15}>
-				<Button>Criar minha conta</Button>
+				<Button
+					_hover={{
+						bg: APP_VARIANT_COLOR,
+						color: "#FFF"
+					}}
+					isLoading={loading}
+					loadingText="Criando conta..."
+					onKeyDown={handleSubmit}
+					onClick={handleSubmit}
+				>
+					Criar minha conta
+				</Button>
 			</FormControl>
 
 			<Text>

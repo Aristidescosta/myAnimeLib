@@ -1,12 +1,17 @@
-import { Box, Heading, Image, Spacer, Text } from "@chakra-ui/react";
-import React from "react";
-import { AuthForm } from "../../shared/forms/AuthForm";
-import { createAccount } from "../../repository/UserRepository";
-import useRegistertUiState from "../../shared/states/useRegistertUiState";
-import { AuthenticationType } from "../../shared/types/AuthenticationType";
+import { Box, Heading, Spacer } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { useToastMessage } from "../../shared/chakra-ui-api/toast";
+import React from "react";
+
+import {
+	AuthenticationType,
+	TUserProps,
+} from "../../shared/types/AuthenticationType";
+import useRegistertUiState from "../../shared/states/useRegistertUiState";
 import { AuthFormSignUp } from "../../shared/forms/AuthFormSignUp";
+import { useToastMessage } from "../../shared/chakra-ui-api/toast";
+import { createAccount } from "../../shared/repository/UserRepository";
+import { AuthForm } from "../../shared/forms/AuthForm";
+import { FirebaseError } from "firebase/app";
 
 export const AuthScreen: React.FC = () => {
 	const { registerUiState, setRegisterUiState } = useRegistertUiState();
@@ -17,11 +22,10 @@ export const AuthScreen: React.FC = () => {
 		setRegisterUiState((prev) => ({ ...prev, isRegister: isRegister }));
 	};
 
-	const handleLogin = (user: AuthenticationType, confirmPassword: string) => {
+	const handleLogin = (user: TUserProps, confirmPassword: string) => {
 		setRegisterUiState((prev) => ({ ...prev, loading: true }));
 		createAccount(user, confirmPassword)
 			.then((response) => {
-				console.log(response);
 				if (response === true) {
 					navigate("/myAnimeLib");
 				} else {
@@ -32,9 +36,9 @@ export const AuthScreen: React.FC = () => {
 					});
 				}
 			})
-			.catch((err) => {
+			.catch((err: FirebaseError) => {
 				toastMessage({
-					title: err,
+					title: err.message,
 					statusToast: ToastStatus.ERROR,
 					position: "top-right",
 				});
@@ -64,26 +68,18 @@ export const AuthScreen: React.FC = () => {
 				alignItems="center"
 				flexDir="column"
 			>
-				<Heading as="h2">{ registerUiState.isRegister ? "Cadastre-se" : "Entrar" }</Heading>
+				<Heading as="h2">
+					{registerUiState.isRegister ? "Cadastre-se" : "Entrar"}
+				</Heading>
 			</Heading>
 			<Spacer height={8} />
-			{registerUiState.isRegister ? (
-				<AuthFormSignUp
-					loading={registerUiState.loading}
-					handleLogin={handleLogin}
-					onChangeRegistrationInformation={() =>
-						onChangeRegistrationInformation(false)
-					}
-				/>
-			) : (
-				<AuthForm
-					loading={registerUiState.loading}
-					handleLogin={handleLogin}
-					onChangeRegistrationInformation={() =>
-						onChangeRegistrationInformation(true)
-					}
-				/>
-			)}
+			<AuthFormSignUp
+				loading={registerUiState.loading}
+				handleLogin={handleLogin}
+				onChangeRegistrationInformation={() =>
+					onChangeRegistrationInformation(false)
+				}
+			/>
 		</Box>
 	);
 };

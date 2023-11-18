@@ -29,8 +29,9 @@ interface IHeader {
 
 export const Header: React.FC<IHeader> = ({ navbar }) => {
   const isBase = useBreakpointValue({ base: true, md: true, lg: false });
-  const user = getData(StorageEnum.Login);
-  const username = user ? user.split("@")[0] : null;
+  const user = getData(StorageEnum.UserData);
+	const PHOTO_URL = getData(StorageEnum.PhotoUrl) 
+  const username = user ? user.username : null;
   const { theBounce } = useTheBounce();
   const { onClose } = useDisclosure();
   const [choice, setChoice] = useState("all");
@@ -111,9 +112,9 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                 <Flex alignItems={"center"} justifyContent={"center"}>
                   <Avatar
                     name={username}
-                    src="https://github.com/Aristidescosta.png"
+                    src={PHOTO_URL}
                   />
-                  { !isBase && <Text fontSize={"small"}>{username}</Text> }
+                  { !isBase && <Text fontSize={"small"} ml={2}>{username}</Text> }
                 </Flex>
                 <MenuButton
                   as={Button}
