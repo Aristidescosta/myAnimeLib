@@ -152,6 +152,7 @@ export const Home: React.FC = () => {
           display={"flex"}
           h={"100%"}
           w={"100%"}
+					overflow={"hidden"}
           alignItems={"center"}
           justifyContent={"center"}
         >

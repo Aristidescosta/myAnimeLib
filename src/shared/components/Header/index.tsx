@@ -105,7 +105,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
             />
           )}
 
-          {!user ? (
+          {user ? (
             <Menu onClose={onClose}>
               <Flex alignItems={"center"} justifyContent={"center"}>
                 <Flex alignItems={"center"} justifyContent={"center"}>

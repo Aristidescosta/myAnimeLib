@@ -55,7 +55,7 @@ export const Featured: React.FC<IFeaturedProps> = ({ items }) => {
 				loop
 			>
 				{items.map((item, key) => (
-					<SwiperSlide key={key} style={{ overflow: "visible" }}>
+					<SwiperSlide key={key}>
 						<FeaturedScreen
 							item={item}
 							setAutoplay={setAutoplay}
