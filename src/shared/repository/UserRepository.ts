@@ -1,5 +1,7 @@
 import { TUserProps } from "../types/AuthenticationType"
 import { signUp } from "../database/UserDAO"
+import { logout } from "../../firebase/Auth"
+import { StorageEnum, deleteData } from "../database/LocalStorageDAO"
 
 function isValidEmail(email: string): boolean {
 	const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
@@ -26,4 +28,12 @@ export const createAccount = (user: TUserProps, confirmPassword: string): Promis
 				.catch(reject)
 		}
 	})
+}
+
+export function signOut() {
+	logout()
+	deleteData(StorageEnum.UserData)
+	deleteData(StorageEnum.Login)
+	deleteData(StorageEnum.PhotoUrl)
+	deleteData(StorageEnum.UserAutenticatePermissions)
 }
