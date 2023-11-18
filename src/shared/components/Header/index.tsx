@@ -32,7 +32,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 	const isBase = useBreakpointValue({ base: true, md: true, lg: false });
 	const user = getData(StorageEnum.UserData);
 	const PHOTO_URL = getData(StorageEnum.PhotoUrl);
-	const username = user ? user.username : null;
+	const username = user ? user.userName : null;
 	const { theBounce } = useTheBounce();
 	const { onClose } = useDisclosure();
 	const [choice, setChoice] = useState("all");

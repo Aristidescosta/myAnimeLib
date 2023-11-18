@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { doc, setDoc } from "firebase/firestore"
+import { doc, getDoc, setDoc } from "firebase/firestore"
 import { firestore } from ".."
 
 const db = firestore.getFirestore()
@@ -23,4 +23,15 @@ export function setDocument(
 	} else {
 		return setDoc(doc(db, collectionName, document), data)
 	}
+}
+
+/**
+ *
+ * @param collectionName - Name of collection (string)
+ * @param document - Identity of document on collection (string)
+ */
+export function getDocument(collectionName: string, document: string) {
+	const docRef = doc(db, collectionName, document)
+	const docSnap = getDoc(docRef)
+	return docSnap
 }

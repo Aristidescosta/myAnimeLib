@@ -9,7 +9,10 @@ import {
 import useRegistertUiState from "../../shared/states/useRegistertUiState";
 import { AuthFormSignUp } from "../../shared/forms/AuthFormSignUp";
 import { useToastMessage } from "../../shared/chakra-ui-api/toast";
-import { createAccount } from "../../shared/repository/UserRepository";
+import {
+	createAccount,
+	signInAccount,
+} from "../../shared/repository/UserRepository";
 import { AuthForm } from "../../shared/forms/AuthForm";
 import { FirebaseError } from "firebase/app";
 
@@ -22,7 +25,7 @@ export const AuthScreen: React.FC = () => {
 		setRegisterUiState((prev) => ({ ...prev, isRegister: isRegister }));
 	};
 
-	const handleLogin = (user: TUserProps, confirmPassword: string) => {
+	const handleRegister = (user: TUserProps, confirmPassword: string) => {
 		setRegisterUiState((prev) => ({ ...prev, loading: true }));
 		createAccount(user, confirmPassword)
 			.then((response) => {
@@ -37,9 +40,39 @@ export const AuthScreen: React.FC = () => {
 				}
 			})
 			.catch((err: FirebaseError) => {
+				if (err.message === "Firebase: Error (auth/email-already-in-use).") {
+					toastMessage({
+						title: "Email já cadastrado!",
+						statusToast: ToastStatus.ERROR,
+						position: "top-right",
+					});
+				} else {
+					console.log(err.message);
+					toastMessage({
+						title: "Lamentamos, tivemos um erro interno! Tente novamente",
+						statusToast: ToastStatus.ERROR,
+						position: "top-right",
+					});
+				}
+			})
+			.finally(() =>
+				setRegisterUiState((prev) => ({ ...prev, loading: false }))
+			);
+	};
+
+	const handleLogin = (user: AuthenticationType) => {
+		setRegisterUiState((prev) => ({ ...prev, loading: true }));
+		signInAccount(user)
+			.then((response) => {
+				if (typeof response === "object") {
+					navigate("/myAnimeLib");
+				}
+			})
+			.catch((error) => {
+				console.error(error);
 				toastMessage({
-					title: err.message,
-					statusToast: ToastStatus.ERROR,
+					title: "Email ou senha incorretas",
+					statusToast: ToastStatus.WARNING,
 					position: "top-right",
 				});
 			})
@@ -73,13 +106,23 @@ export const AuthScreen: React.FC = () => {
 				</Heading>
 			</Heading>
 			<Spacer height={8} />
-			<AuthFormSignUp
-				loading={registerUiState.loading}
-				handleLogin={handleLogin}
-				onChangeRegistrationInformation={() =>
-					onChangeRegistrationInformation(false)
-				}
-			/>
+			{registerUiState.isRegister ? (
+				<AuthFormSignUp
+					loading={registerUiState.loading}
+					handleLogin={handleRegister}
+					onChangeRegistrationInformation={() =>
+						onChangeRegistrationInformation(false)
+					}
+				/>
+			) : (
+				<AuthForm
+					loading={registerUiState.loading}
+					handleLogin={handleLogin}
+					onChangeRegistrationInformation={() =>
+						onChangeRegistrationInformation(true)
+					}
+				/>
+			)}
 		</Box>
 	);
 };

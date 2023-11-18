@@ -1,10 +1,11 @@
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 
 
-import { TUserProps } from "../types/AuthenticationType"
+import { AuthenticationType, TUserProps } from "../types/AuthenticationType"
 import { StorageEnum, saveData } from "./LocalStorageDAO"
 import { setDocument } from "../../firebase/firestore"
 import { COLLECTION_USERS } from "../utils/constants"
+import { loginWithEmailAndPassword } from "../../firebase/Auth"
 
 export const signUp = (user: TUserProps): Promise<boolean> => {
 	return new Promise((resolve, reject) => {
@@ -13,7 +14,7 @@ export const signUp = (user: TUserProps): Promise<boolean> => {
 			createUserWithEmailAndPassword(auth, user.email, user.password)
 				.then(() => {
 					createUserAccount(user)
-					saveData(StorageEnum.UserData, { name: user.name, email: user.email, username: user.userName })
+					saveData(StorageEnum.UserData, { name: user.name, email: user.email, userName: user.userName })
 					resolve(true)
 				})
 				.catch(reject)
@@ -21,6 +22,18 @@ export const signUp = (user: TUserProps): Promise<boolean> => {
 			reject()
 			console.error(error)
 		}
+	})
+}
+
+export const signIn = (user: AuthenticationType) =>{
+	return new Promise((resolve, reject) => {
+		loginWithEmailAndPassword(user.email, user.password)
+			.then((userCredential) => {
+				const user = userCredential.user;
+				resolve(user)
+				saveData(StorageEnum.Login, user.email)
+			})
+			.catch(reject)
 	})
 }
 
