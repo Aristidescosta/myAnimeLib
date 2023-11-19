@@ -86,12 +86,11 @@ export const AuthScreen: React.FC = () => {
 			borderRadius="6px"
 			bgColor="#466c9e"
 			padding={"8"}
-			width={"xl"}
 			border="1px solid #DDDDDD"
 			boxShadow="dark-lg"
 			textAlign={"center"}
 			position={"absolute"}
-			top={"30%"}
+			top={"15%"}
 			left="50%"
 			transform="translateX(-50%)"
 		>
