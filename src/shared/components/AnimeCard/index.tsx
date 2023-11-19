@@ -15,12 +15,21 @@ interface IAnimeCardProps {
 	handleClick: (newItem: AnimeData) => void;
 }
 
+export interface IUserFavoriteProps{
+	email: string;
+	favorites: TFavoriteProps[]
+	name: string
+	username: string
+	password: string
+}
+
 export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 	const [colorSchema, setColorSchema] = useState<"gray" | "red">("gray");
 	const [isLoading, setIsLoading] = useState(false);
 	const { animeList, setAnimeList } = useDataAnime();
 	const { toastMessage, ToastStatus } = useToastMessage();
-	const FAVORITE_ITEM_IDS: number[] = getData(StorageEnum.Favorites) ?? [];
+	const USER_DATA: IUserFavoriteProps = getData(StorageEnum.UserData)
+	const USER_FAVORITE_DATA = USER_DATA?.favorites
 	const FAVORITE_DATA: TFavoriteProps = {
 		id: item.mal_id,
 		title: item.title,
@@ -38,10 +47,10 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 		item.isFavorite = status;
 
 		const ANIME_DATA: IAnimeListProps[] = [];
-		const FAVORITE_ID = FAVORITE_ITEM_IDS.find((prev) => prev === item.mal_id);
+		const FAVORITE = USER_FAVORITE_DATA.find((prev) => prev.id === item.mal_id);
 		for (const itemPosition in animeList) {
 			animeList[itemPosition].items.data.map((prev) => {
-				prev.mal_id == FAVORITE_ID ? item : prev;
+				prev.mal_id == FAVORITE?.id ? item : prev;
 			});
 			ANIME_DATA.push(animeList[itemPosition]);
 		}

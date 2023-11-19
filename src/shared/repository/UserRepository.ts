@@ -83,6 +83,5 @@ export function signOut() {
 	deleteData(StorageEnum.Login)
 	deleteData(StorageEnum.PhotoUrl)
 	deleteData(StorageEnum.UserAutenticatePermissions)
-	deleteData(StorageEnum.Favorites)
 	deleteData("anime-storage")
 }
