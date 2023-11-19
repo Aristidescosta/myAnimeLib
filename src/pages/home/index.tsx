@@ -14,7 +14,19 @@ import { AnimeData } from "../../shared/types/AnimeData";
 export interface IAnimeListProps {
   slug: string;
   title: string;
-  items: any;
+  items: {
+		data: AnimeData[]
+		pagination: {
+			current_page: number
+			has_next_page: boolean
+			items: {
+				count: number,
+				total: number,
+				per_page: number
+			}
+			last_visible_page: number
+		}
+	}
 }
 
 export const Home: React.FC = () => {

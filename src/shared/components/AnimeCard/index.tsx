@@ -1,7 +1,13 @@
 import { Flex, IconButton, Image, Stack, Tag, Text } from "@chakra-ui/react";
 import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AnimeData } from "../../types/AnimeData";
+import { StorageEnum, getData } from "../../database/LocalStorageDAO";
+import { useDataAnime } from "../../states/useAnimeRequest";
+import { IAnimeListProps } from "../../../pages";
+import { setItemWithFavorite } from "../../repository/FavoriteRepository";
+import { TFavoriteProps } from "../../types/FavoriteType";
+import { useToastMessage } from "../../chakra-ui-api/toast";
 
 interface IAnimeCardProps {
 	item: AnimeData;
@@ -10,10 +16,77 @@ interface IAnimeCardProps {
 
 export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 	const [colorSchema, setColorSchema] = useState<"gray" | "red">("gray");
+	const [isLoading, setIsLoading] = useState(false);
+	const { animeList, setAnimeList } = useDataAnime();
+	const { toastMessage, ToastStatus } = useToastMessage();
+	const FAVORITE_ITEM_IDS: number[] = getData(StorageEnum.Favorites) ?? [];
+	const FAVORITE_DATA: TFavoriteProps = {
+		id: item.mal_id,
+		title: item.title,
+	};
+
+	useEffect(() => {
+		if (item.isFavorite) {
+			setColorSchema("red");
+		} else {
+			setColorSchema("gray");
+		}
+	}, [item.isFavorite]);
+
+	const updateStatusFavoriteItem = (status: boolean) => {
+		item.isFavorite = status;
+
+		const ANIME_DATA: IAnimeListProps[] = [];
+		const FAVORITE_ID = FAVORITE_ITEM_IDS.find((prev) => prev === item.mal_id);
+		for (const itemPosition in animeList) {
+			animeList[itemPosition].items.data.map((prev) => {
+				prev.mal_id == FAVORITE_ID ? item : prev;
+			});
+			ANIME_DATA.push(animeList[itemPosition]);
+		}
+		setAnimeList(ANIME_DATA);
+	};
 
 	const onFavoriteItem = useCallback(() => {
 		/* handleFavoriteItem(item) */
-		setColorSchema((prev) => (prev === "gray" ? "red" : "gray"));
+		setIsLoading(true);
+		setItemWithFavorite(FAVORITE_DATA, item.isFavorite)
+			.then((response) => {
+				toastMessage({
+					title: response,
+					statusToast: ToastStatus.SUCCESS,
+					position: "top-right",
+				});
+				if (response.includes("removido")) {
+					updateStatusFavoriteItem(false);
+					setColorSchema("gray");
+				}else{
+					updateStatusFavoriteItem(true);
+					setColorSchema("red");
+				}
+			})
+			.catch((response) => {
+				console.log(response);
+			})
+			.finally(() => setIsLoading(false));
+
+		/* setColorSchema((prev) => {
+			if (prev === "gray") {
+				item.isFavorite = true;
+				if (FAVORITE_ITEM_IDS) {
+					FAVORITE_ITEM_IDS.push(item.mal_id);
+					saveData(StorageEnum.Favorites, FAVORITE_ITEM_IDS);
+				} else {
+					saveData(StorageEnum.Favorites, item.mal_id);
+				}
+				updateStatusFavoriteItem(true);
+				return "red";
+			} else {
+				item.isFavorite = false;
+				updateStatusFavoriteItem(false);
+				return "gray";
+			}
+		}); */
 	}, []);
 
 	return (
@@ -59,6 +132,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 								icon={<AiFillHeart />}
 								colorScheme={colorSchema}
 								onClick={onFavoriteItem}
+								isLoading={isLoading}
 							/>
 
 							<IconButton
