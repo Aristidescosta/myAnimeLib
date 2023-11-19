@@ -1,6 +1,6 @@
 import { Flex, IconButton, Image, Stack, Tag, Text } from "@chakra-ui/react";
 import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { AnimeData } from "../../types/AnimeData";
 
 interface IAnimeCardProps {
@@ -9,6 +9,13 @@ interface IAnimeCardProps {
 }
 
 export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
+	const [colorSchema, setColorSchema] = useState<"gray" | "red">("gray");
+
+	const onFavoriteItem = useCallback(() => {
+		/* handleFavoriteItem(item) */
+		setColorSchema((prev) => (prev === "gray" ? "red" : "gray"));
+	}, []);
+
 	return (
 		<Flex
 			pos={"relative"}
@@ -22,7 +29,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 			}}
 			cursor={"pointer"}
 			overflow="visible"
-			onClick={() => handleClick(item)}
+			/* onClick={() => handleClick(item)} */
 			mr={2}
 			boxShadow={"2xl"}
 			mb={20}
@@ -50,7 +57,8 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 							<IconButton
 								aria-label="Adicionar aos favoritos"
 								icon={<AiFillHeart />}
-								colorScheme="gray"
+								colorScheme={colorSchema}
+								onClick={onFavoriteItem}
 							/>
 
 							<IconButton
