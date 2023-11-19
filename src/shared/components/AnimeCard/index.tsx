@@ -1,13 +1,14 @@
 import { Flex, IconButton, Image, Stack, Tag, Text } from "@chakra-ui/react";
-import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
 import React, { useCallback, useEffect, useState } from "react";
-import { AnimeData } from "../../types/AnimeData";
-import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { useDataAnime } from "../../states/useAnimeRequest";
-import { IAnimeListProps } from "../../../pages";
+import { AiFillHeart, AiOutlinePlus } from "react-icons/ai";
+
 import { setItemWithFavorite } from "../../repository/FavoriteRepository";
-import { TFavoriteProps } from "../../types/FavoriteType";
+import { StorageEnum, getData } from "../../database/LocalStorageDAO";
 import { useToastMessage } from "../../chakra-ui-api/toast";
+import { useDataAnime } from "../../states/useAnimeRequest";
+import { TFavoriteProps } from "../../types/FavoriteType";
+import { AnimeData } from "../../types/AnimeData";
+import { IAnimeListProps } from "../../../pages";
 
 interface IAnimeCardProps {
 	item: AnimeData;
@@ -48,7 +49,6 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 	};
 
 	const onFavoriteItem = useCallback(() => {
-		/* handleFavoriteItem(item) */
 		setIsLoading(true);
 		setItemWithFavorite(FAVORITE_DATA, item.isFavorite)
 			.then((response) => {
@@ -60,33 +60,15 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 				if (response.includes("removido")) {
 					updateStatusFavoriteItem(false);
 					setColorSchema("gray");
-				}else{
+				} else {
 					updateStatusFavoriteItem(true);
 					setColorSchema("red");
 				}
 			})
-			.catch((response) => {
-				console.log(response);
+			.catch((err) => {
+				console.error(err);
 			})
 			.finally(() => setIsLoading(false));
-
-		/* setColorSchema((prev) => {
-			if (prev === "gray") {
-				item.isFavorite = true;
-				if (FAVORITE_ITEM_IDS) {
-					FAVORITE_ITEM_IDS.push(item.mal_id);
-					saveData(StorageEnum.Favorites, FAVORITE_ITEM_IDS);
-				} else {
-					saveData(StorageEnum.Favorites, item.mal_id);
-				}
-				updateStatusFavoriteItem(true);
-				return "red";
-			} else {
-				item.isFavorite = false;
-				updateStatusFavoriteItem(false);
-				return "gray";
-			}
-		}); */
 	}, []);
 
 	return (
@@ -102,7 +84,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 			}}
 			cursor={"pointer"}
 			overflow="visible"
-			/* onClick={() => handleClick(item)} */
+			onClick={() => handleClick(item)}
 			mr={2}
 			boxShadow={"2xl"}
 			mb={20}
@@ -149,13 +131,13 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 				<Text textOverflow={"ellipsis"} w={"full"}>
 					{item.title}
 				</Text>
-				<Stack direction={["column", "row"]} spacing="8px">
+				{/* <Stack direction={["column", "row"]} spacing="8px">
 					<Tag colorScheme="gray" w={"min"}>
 						SIMULCAST
 					</Tag>
 					<Text>SUB</Text>
 					<Text>DOB</Text>
-				</Stack>
+				</Stack> */}
 			</Flex>
 		</Flex>
 	);
