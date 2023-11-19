@@ -108,6 +108,19 @@ export const Home: React.FC = () => {
 		setAnimeData(ANIME_DATA);
 	};
 
+	const updateAnimeCard = (itemData: IAnimeListProps[]) => {
+		for (const result in itemData) {
+			itemData[result].items.data.forEach((item) => {
+				USER_FAVORITE_DATA?.forEach((favoriteData) => {
+					if (item.mal_id === favoriteData.id) {
+						item.isFavorite = true;
+					}
+				});
+			});
+		}
+		setAnimeList(itemData);
+	};
+
 	function getAnimeList(): Promise<IAnimeListProps[]> {
 		return new Promise((resolve, reject) => {
 			jikanDB
@@ -134,16 +147,7 @@ export const Home: React.FC = () => {
 		) {
 			getAnimeList()
 				.then((response) => {
-					for (const result in response) {
-						response[result].items.data.forEach((item) => {
-							USER_FAVORITE_DATA?.forEach((favoriteData) => {
-								if (item.mal_id === favoriteData.id) {
-									item.isFavorite = true;
-								}
-							});
-						});
-					}
-					setAnimeList(response);
+					updateAnimeCard(response)
 				})
 				.catch((error) => {
 					toast({
@@ -170,6 +174,7 @@ export const Home: React.FC = () => {
 					});
 			} else {
 				setIsLoading(false);
+				updateAnimeCard(animeList)
 				addDataOnAnimeData(animeList);
 			}
 		}

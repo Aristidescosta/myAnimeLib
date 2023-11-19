@@ -70,7 +70,10 @@ export const signInAccount = (user: AuthenticationType): Promise<AuthenticationT
 		} else {
 			signIn(user)
 				.then(() => {
-					getUserData(user.email).then(() => resolve(user)).catch(reject)
+					getUserData(user.email).then(() => {
+						deleteData("anime-storage")
+						resolve(user)
+					}).catch(reject)
 				})
 				.catch(reject)
 		}

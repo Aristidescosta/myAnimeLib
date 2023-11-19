@@ -47,7 +47,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 		item.isFavorite = status;
 
 		const ANIME_DATA: IAnimeListProps[] = [];
-		const FAVORITE = USER_FAVORITE_DATA.find((prev) => prev.id === item.mal_id);
+		const FAVORITE = USER_FAVORITE_DATA?.find((prev) => prev.id === item.mal_id);
 		for (const itemPosition in animeList) {
 			animeList[itemPosition].items.data.map((prev) => {
 				prev.mal_id == FAVORITE?.id ? item : prev;
@@ -61,7 +61,7 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 		(event: React.MouseEvent) => {
 			event.stopPropagation(); // Impede a propagação do evento para o contêiner pai
 			setIsLoading(true);
-			setItemWithFavorite(FAVORITE_DATA, item.isFavorite)
+			setItemWithFavorite(FAVORITE_DATA, item.isFavorite || false)
 				.then((response) => {
 					toastMessage({
 						title: response,

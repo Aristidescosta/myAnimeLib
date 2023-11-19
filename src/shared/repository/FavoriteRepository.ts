@@ -8,15 +8,15 @@ export const setItemWithFavorite = (favorites: TFavoriteProps, isFavorite: boole
 	return new Promise((resolve, reject) => {
 		try {
 			const USER_DATA: IUserFavoriteProps = getData(StorageEnum.UserData);
-			const USER_FAVORITE_DATA = USER_DATA.favorites;
-			const FAVORITE_ITEM_INDEX = USER_FAVORITE_DATA.findIndex((prev) => prev.id === favorites.id);
-
+			const USER_FAVORITE_DATA = USER_DATA.favorites ?? [];
+			const FAVORITE_ITEM_INDEX = USER_FAVORITE_DATA?.findIndex((prev) => prev.id === favorites.id);
+			
 			if (FAVORITE_ITEM_INDEX !== -1) {
-				USER_FAVORITE_DATA.splice(FAVORITE_ITEM_INDEX, 1);
-			}else{
-				USER_FAVORITE_DATA.push(favorites)
+				USER_FAVORITE_DATA?.splice(FAVORITE_ITEM_INDEX, 1);
+			} else {
+				USER_FAVORITE_DATA?.push(favorites)
 			}
-
+			console.log(USER_FAVORITE_DATA)
 			favoriteData(USER_FAVORITE_DATA)
 				.then(() => {
 					saveData(StorageEnum.UserData, { ...USER_DATA, favorites: USER_FAVORITE_DATA });
