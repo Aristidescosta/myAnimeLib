@@ -59,7 +59,8 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 
 	function onLogout() {
 		signOut();
-		navigate("/myAnimeLib");
+		window.location.reload()
+		/* navigate("/myAnimeLib"); */
 	}
 
 	return (

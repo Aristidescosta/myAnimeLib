@@ -4,7 +4,8 @@ export enum StorageEnum {
 	UserAutenticatePermissions = 'userAutenticatePermissions',
 	PhotoUrl = "photoUrl",
 	Login = 'login',
-	UserData = "userData"
+	UserData = "userData",
+	Favorites = "favorites"
 }
 
 export function saveData(key: string, data: unknown) {

@@ -14,6 +14,7 @@ export const signUp = (user: TUserProps): Promise<boolean> => {
 			createUserWithEmailAndPassword(auth, user.email, user.password)
 				.then(() => {
 					createUserAccount(user)
+					saveData(StorageEnum.Login, user.email)
 					saveData(StorageEnum.UserData, { name: user.name, email: user.email, userName: user.userName })
 					resolve(true)
 				})
