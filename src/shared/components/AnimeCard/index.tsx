@@ -48,28 +48,32 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 		setAnimeList(ANIME_DATA);
 	};
 
-	const onFavoriteItem = useCallback(() => {
-		setIsLoading(true);
-		setItemWithFavorite(FAVORITE_DATA, item.isFavorite)
-			.then((response) => {
-				toastMessage({
-					title: response,
-					statusToast: ToastStatus.SUCCESS,
-					position: "top-right",
-				});
-				if (response.includes("removido")) {
-					updateStatusFavoriteItem(false);
-					setColorSchema("gray");
-				} else {
-					updateStatusFavoriteItem(true);
-					setColorSchema("red");
-				}
-			})
-			.catch((err) => {
-				console.error(err);
-			})
-			.finally(() => setIsLoading(false));
-	}, []);
+	const onFavoriteItem = useCallback(
+		(event: React.MouseEvent) => {
+			event.stopPropagation(); // Impede a propagação do evento para o contêiner pai
+			setIsLoading(true);
+			setItemWithFavorite(FAVORITE_DATA, item.isFavorite)
+				.then((response) => {
+					toastMessage({
+						title: response,
+						statusToast: ToastStatus.SUCCESS,
+						position: "top-right",
+					});
+					if (response.includes("removido")) {
+						updateStatusFavoriteItem(false);
+						setColorSchema("gray");
+					} else {
+						updateStatusFavoriteItem(true);
+						setColorSchema("red");
+					}
+				})
+				.catch((err) => {
+					console.error(err);
+				})
+				.finally(() => setIsLoading(false));
+		},
+		[item.isFavorite]
+	);
 
 	return (
 		<Flex
@@ -84,10 +88,9 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 			}}
 			cursor={"pointer"}
 			overflow="visible"
-			onClick={() => handleClick(item)}
 			mr={2}
 			boxShadow={"2xl"}
-			mb={20}
+			mb={10}
 		>
 			<Flex>
 				<Image
@@ -104,7 +107,8 @@ export const AnimeCard: React.FC<IAnimeCardProps> = ({ item, handleClick }) => {
 					pos={"absolute"}
 					top={0}
 					zIndex={9999}
-					overflow="visible" // Defina o overflow para "visible"
+					overflow="visible"
+					onClick={() => handleClick(item)} // Defina o overflow para "visible"
 				>
 					<Flex justifyContent={"space-between"}>
 						<Tag h={"0.5"}>{item.year}</Tag>
