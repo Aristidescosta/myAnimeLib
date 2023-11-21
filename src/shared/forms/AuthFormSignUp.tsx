@@ -8,11 +8,13 @@ import {
 	InputLeftElement,
 	Text,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { APP_COLOR, APP_VARIANT_COLOR } from "../utils/constants";
 import { TUserProps } from "../types/AuthenticationType";
 import { FaCircleUser } from "react-icons/fa6";
 import { MdEmail, MdPassword } from "react-icons/md";
+import { useWindowMeasure } from "../states/useWindowMeasure";
+import { WindowSize } from "../components/Featured/FeaturedScreen";
 
 interface AuthFormSignUp {
 	loading: boolean;
@@ -30,6 +32,27 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 	const REF_RE_PASSWORD = useRef<HTMLInputElement>(null);
 	const REF_NAME = useRef<HTMLInputElement>(null);
 	const REF_USER_NAME = useRef<HTMLInputElement>(null);
+
+	const { md, sm } = useWindowMeasure();
+  const [windowSize, setWindowSize] = useState<WindowSize>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setWindowSize]);
 
 	function handleSubmit(
 		e: React.KeyboardEvent | React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -58,8 +81,8 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 		<>
 			<Grid templateColumns={"repeat(2, 1fr)"} gap={6}>
 				<FormControl id="name">
-					<FormLabel>Nome</FormLabel>
-					<InputGroup>
+					<FormLabel fontSize={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>Nome</FormLabel>
+					<InputGroup size={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>
 						<InputLeftElement pointerEvents={"none"}>
 							<FaCircleUser />
 						</InputLeftElement>
@@ -68,8 +91,8 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 				</FormControl>
 
 				<FormControl id="userName">
-					<FormLabel>Nome de usuario</FormLabel>
-					<InputGroup>
+					<FormLabel fontSize={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>Nome de usuario</FormLabel>
+					<InputGroup size={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>
 						<InputLeftElement pointerEvents={"none"}>
 							<FaCircleUser />
 						</InputLeftElement>
@@ -78,8 +101,8 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 				</FormControl>
 
 				<FormControl id="email">
-					<FormLabel>Email</FormLabel>
-					<InputGroup>
+					<FormLabel fontSize={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>Email</FormLabel>
+					<InputGroup size={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>
 						<InputLeftElement pointerEvents={"none"}>
 							<MdEmail />
 						</InputLeftElement>
@@ -88,23 +111,23 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 				</FormControl>
 
 				<FormControl id="userName">
-					<FormLabel>Palavra passe</FormLabel>
-					<InputGroup>
+					<FormLabel fontSize={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>Palavra passe</FormLabel>
+					<InputGroup size={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>
 						<InputLeftElement pointerEvents={"none"}>
 							<MdPassword />
 						</InputLeftElement>
-						<Input type="text" ref={REF_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
+						<Input type="password" ref={REF_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
 					</InputGroup>
 				</FormControl>
 			</Grid>
 
 			<FormControl id="userName" mt={15}>
-				<FormLabel>Reconfirma palavra passe</FormLabel>
-				<InputGroup>
+				<FormLabel fontSize={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>Reconfirma palavra passe</FormLabel>
+				<InputGroup size={windowSize.width <= sm ? "xs" : windowSize.width <= md ? "md" : "lg"}>
 					<InputLeftElement pointerEvents={"none"}>
 						<MdPassword />
 					</InputLeftElement>
-					<Input type="text" ref={REF_RE_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
+					<Input type="password" ref={REF_RE_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
 				</InputGroup>
 			</FormControl>
 

@@ -1,25 +1,47 @@
 import { Box, Heading, Spacer } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import React from "react";
 
+import { WindowSize } from "../../shared/components/Featured/FeaturedScreen";
+import useRegistertUiState from "../../shared/states/useRegistertUiState";
+import { AuthFormSignUp } from "../../shared/forms/AuthFormSignUp";
+import { useWindowMeasure } from "../../shared/states/useWindowMeasure";
+import { useToastMessage } from "../../shared/chakra-ui-api/toast";
+import { AuthForm } from "../../shared/forms/AuthForm";
 import {
 	AuthenticationType,
 	TUserProps,
 } from "../../shared/types/AuthenticationType";
-import useRegistertUiState from "../../shared/states/useRegistertUiState";
-import { AuthFormSignUp } from "../../shared/forms/AuthFormSignUp";
-import { useToastMessage } from "../../shared/chakra-ui-api/toast";
 import {
 	createAccount,
 	signInAccount,
 } from "../../shared/repository/UserRepository";
-import { AuthForm } from "../../shared/forms/AuthForm";
-import { FirebaseError } from "firebase/app";
 
 export const AuthScreen: React.FC = () => {
 	const { registerUiState, setRegisterUiState } = useRegistertUiState();
 	const navigate = useNavigate();
 	const { toastMessage, ToastStatus } = useToastMessage();
+
+	const { sm } = useWindowMeasure();
+	const [windowSize, setWindowSize] = useState<WindowSize>({
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
+
+	useEffect(() => {
+		const handleResize = () => {
+			setWindowSize({
+				width: window.innerWidth,
+				height: window.innerHeight,
+			});
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("resize", handleResize);
+		};
+	}, [setWindowSize]);
 
 	const onChangeRegistrationInformation = (isRegister: boolean) => {
 		setRegisterUiState((prev) => ({ ...prev, isRegister: isRegister }));
@@ -39,7 +61,7 @@ export const AuthScreen: React.FC = () => {
 					});
 				}
 			})
-			.catch((err: FirebaseError) => {
+			.catch((err) => {
 				if (err.message === "Firebase: Error (auth/email-already-in-use).") {
 					toastMessage({
 						title: "Email já cadastrado!",
@@ -47,9 +69,9 @@ export const AuthScreen: React.FC = () => {
 						position: "top-right",
 					});
 				} else {
-					console.log(err.message);
+					console.log(err);
 					toastMessage({
-						title: "Lamentamos, tivemos um erro interno! Tente novamente",
+						title: err,
 						statusToast: ToastStatus.ERROR,
 						position: "top-right",
 					});
@@ -85,8 +107,10 @@ export const AuthScreen: React.FC = () => {
 		<Box
 			borderRadius="6px"
 			bgColor="#466c9e"
-			padding={"8"}
+			pl={"6"}
+			pr={"6"}
 			border="1px solid #DDDDDD"
+			width={windowSize.width <= sm ? "90%" : "inherit"}
 			boxShadow="dark-lg"
 			textAlign={"center"}
 			position={"absolute"}

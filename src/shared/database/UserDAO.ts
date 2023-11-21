@@ -7,6 +7,8 @@ import { setDocument } from "../../firebase/firestore"
 import { COLLECTION_USERS } from "../utils/constants"
 import { loginWithEmailAndPassword } from "../../firebase/Auth"
 
+export interface TUserData extends Omit<TUserProps, "password">{}
+
 export const signUp = (user: TUserProps): Promise<boolean> => {
 	return new Promise((resolve, reject) => {
 		try {
@@ -37,7 +39,7 @@ export const signIn = (user: AuthenticationType) =>{
 	})
 }
 
-export const createUserAccount = (user: TUserProps): Promise<void> => {
+export const createUserAccount = (user: TUserData): Promise<void> => {
 	return new Promise((resolve, reject) => {
 		setDocument(COLLECTION_USERS, user.email, user)
 			.then(resolve)
