@@ -11,8 +11,14 @@ function isValidEmail(email: string): boolean {
 }
 
 export const createAccount = (user: TUserProps, confirmPassword: string): Promise<string | boolean> => {
+	console.log(user)
 	return new Promise((resolve, reject) => {
-		if (user.email.trim() === "") {
+		if (user.name.trim() === "") {
+			reject("Digite o seu nome")
+		} else if (user.userName.trim() === "") {
+			reject("Digite o seu nome de usuário")
+		} else if (user.email.trim() === "") {
+			console.log("teste")
 			reject("Digite o seu email de utilizador")
 		} else if (!isValidEmail(user.email)) {
 			reject("Digite um email válido")
