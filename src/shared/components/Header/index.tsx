@@ -27,7 +27,7 @@ interface IHeader {
   navbar: TNavbarItem[];
 }
 
-export const Header: React.FC<IHeader> = ({ navbar }) => {
+export const Header: React.FC<IHeader> = () => {
   const isBase = useBreakpointValue({ base: true, md: true, lg: false });
   const user = getData(StorageEnum.Login);
   const username = user ? user.split("@")[0] : null;
@@ -81,7 +81,7 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
           </Text>
         </Box>
 
-        <NavigationBar items={navbar} isBase={isBase || false} />
+        <NavigationBar />
 
         <HStack display={"flex"} justify={"space-between"}>
           {isBase ? (
