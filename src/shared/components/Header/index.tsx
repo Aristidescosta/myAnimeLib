@@ -19,7 +19,7 @@ import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR, FIRST_COLOR, FONT_SEMI_BOLD, H2_FONT_SIZE, HEADER_HEIGHT, TRANSPARENT_COLOR, Z_FIXED } from "../../utils/constants";
 import { useTheBounce } from "../../hooks/hooks";
 import { SearchForm } from "../../forms/SearchForm";
 
@@ -56,17 +56,28 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
   });
 
   return (
-    <Box>
+    <Box 
+      backgroundColor={TRANSPARENT_COLOR} 
+      backdropFilter={"blur(4px)"} 
+      position={"fixed"} 
+      width={"100%"} 
+      height={HEADER_HEIGHT}
+      display={"grid"}
+      placeContent={"center"}
+      top={"0px"} 
+      zIndex={Z_FIXED}
+      boxShadow={"0 4px 10px rgb( 0, 0, 0, .09 )"}
+      as={"header"}
+    >
       <Box
+        w={{ base: '95vh', md:'95vh', lg: '1200px' }}
         display={"flex"}
         justifyContent={"space-between"}
-        alignItems={"center"}
-        h={["20", "96px"]}
-        mx={["2", "8"]}
+        alignItems={"center"}  
       >
         <Box as={Link} display={"flex"} alignSelf={"center"} to={"/"}>
-          <Text as={"h1"} textTransform={"capitalize"}>
-            AnimeLib
+          <Text as={"h1"} display={"flex"} alignItems={"center"} fontSize={H2_FONT_SIZE} fontWeight={FONT_SEMI_BOLD}>
+            my<Text as={"span"} color={FIRST_COLOR}>AnimeLib</Text>
           </Text>
         </Box>
 
@@ -113,7 +124,6 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
                     name={username}
                     src="https://github.com/Aristidescosta.png"
                   />
-                  { !isBase && <Text fontSize={"small"}>Aristides Costa</Text> }
                 </Flex>
                 <MenuButton
                   as={Button}
