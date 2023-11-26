@@ -13,6 +13,7 @@ import { AuthenticationType } from "../types/AuthenticationType";
 import { useWindowMeasure } from "../states/useWindowMeasure";
 import { WindowSize } from "../components/Featured/FeaturedScreen";
 import { handleLoginWithGoogle } from "../repository/UserRepository";
+import { FaGoogle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 interface IAuthForm {
@@ -155,6 +156,7 @@ export const AuthForm: React.FC<IAuthForm> = ({
 					loadingText="A entrar..."
 					onKeyDown={onhandleLoginWithGoogle}
 					onClick={onhandleLoginWithGoogle}
+					leftIcon={<FaGoogle />}
 				>
 					ENTRAR COM A GOOGLE
 				</Button>

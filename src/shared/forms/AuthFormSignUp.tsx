@@ -106,7 +106,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<MdEmail />
 						</InputLeftElement>
-						<Input type="email" ref={REF_EMAIL} onKeyDown={handleSubmit} placeholder="Nome" />
+						<Input type="email" ref={REF_EMAIL} onKeyDown={handleSubmit} placeholder="emailexample@gmail.com" />
 					</InputGroup>
 				</FormControl>
 
@@ -116,7 +116,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 						<InputLeftElement pointerEvents={"none"}>
 							<MdPassword />
 						</InputLeftElement>
-						<Input type="password" ref={REF_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
+						<Input type="password" ref={REF_PASSWORD} onKeyDown={handleSubmit} placeholder="***********" />
 					</InputGroup>
 				</FormControl>
 			</Grid>
@@ -127,7 +127,7 @@ export const AuthFormSignUp: React.FC<AuthFormSignUp> = ({
 					<InputLeftElement pointerEvents={"none"}>
 						<MdPassword />
 					</InputLeftElement>
-					<Input type="password" ref={REF_RE_PASSWORD} onKeyDown={handleSubmit} placeholder="Nome de usuário" />
+					<Input type="password" ref={REF_RE_PASSWORD} onKeyDown={handleSubmit} placeholder="***********" />
 				</InputGroup>
 			</FormControl>
 
