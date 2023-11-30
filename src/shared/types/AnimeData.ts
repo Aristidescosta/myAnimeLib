@@ -76,3 +76,21 @@ export interface AnimeData {
 	year: number;
 	isFavorite: boolean
 }
+
+
+export interface IAnimeListProps {
+	title: string;
+	data: AnimeData[];
+	pagination: IPaginationProps
+}
+
+export interface IPaginationProps {
+	current_page: number;
+	has_next_page: boolean;
+	items: {
+		count: number;
+		total: number;
+		per_page: number;
+	};
+	last_visible_page: number;
+}

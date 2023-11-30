@@ -21,7 +21,7 @@
     "@fontsource/poppins": "^5.0.8",
     "@loadable/component": "^5.15.3",
     "@types/loadable__component": "^5.13.6",
-    "axios": "^1.6.0",
+    "axios": "^1.6.2",
     "firebase": "^10.6.0",
     "framer-motion": "^10.16.4",
     "gh-pages": "^6.0.0",
