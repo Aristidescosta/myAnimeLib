@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import { responseInterceptors } from "./ResponseInterceptors";
-import { errorInterceptors } from "./ErrorInterceptors";
-import { Environment } from "../../../../environment";
+import { responseInterceptors } from "./interceptors/ResponseInterceptors";
+import { errorInterceptors } from "./interceptors/ErrorInterceptors";
+import { Environment } from "../../../environment";
 
 
 

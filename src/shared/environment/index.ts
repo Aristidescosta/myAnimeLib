@@ -2,7 +2,7 @@ export const Environment = {
   /**
    * Define a quantidade de dados a ser carregada por padrão nas listagens
    */
-  LIMITE_DE_DADOS: 5,
+  LIMITE_DE_DADOS: 15,
 
   /**
    * Placeholder exibido nas inputs
