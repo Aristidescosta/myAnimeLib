@@ -15,20 +15,17 @@ import {
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { TNavbarItem } from "../../types/NavbarItem";
 import NavigationBar from "./NavgationBar";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { APP_COLOR, APP_VARIANT_COLOR } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR, FIRST_COLOR, FONT_SEMI_BOLD, H2_FONT_SIZE, HEADER_HEIGHT, TRANSPARENT_COLOR, Z_FIXED } from "../../utils/constants";
 import { useTheBounce } from "../../hooks/hooks";
 import { SearchForm } from "../../forms/SearchForm";
 import { signOut } from "../../repository/UserRepository";
 
-interface IHeader {
-	navbar: TNavbarItem[];
-}
 
-export const Header: React.FC<IHeader> = ({ navbar }) => {
+
+export const Header: React.FC = () => {
 	const isBase = useBreakpointValue({ base: true, md: true, lg: false });
 	const user = getData(StorageEnum.UserData);
 	const PHOTO_URL = getData(StorageEnum.PhotoUrl);
@@ -57,28 +54,39 @@ export const Header: React.FC<IHeader> = ({ navbar }) => {
 		});
 	});
 
-	function onLogout() {
-		signOut();
-		window.location.reload();
-		/* navigate("/myAnimeLib"); */
-	}
-	console.log(PHOTO_URL);
-	return (
-		<Box>
-			<Box
-				display={"flex"}
-				justifyContent={"space-between"}
-				alignItems={"center"}
-				h={["20", "96px"]}
-				mx={["2", "8"]}
-			>
-				<Box as={Link} display={"flex"} alignSelf={"center"} to={"/"}>
-					<Text as={"h1"} textTransform={"capitalize"}>
-						AnimeLib
-					</Text>
-				</Box>
+  function onLogout() {
+    signOut();
+    window.location.reload();
+    /* navigate("/myAnimeLib"); */
+  }
 
-				<NavigationBar items={navbar} isBase={isBase || false} />
+  return (
+    <Box 
+      backgroundColor={TRANSPARENT_COLOR} 
+      backdropFilter={"blur(4px)"} 
+      position={"fixed"} 
+      width={"100%"} 
+      height={HEADER_HEIGHT}
+      display={"grid"}
+      placeContent={"center"}
+      top={"0px"} 
+      zIndex={Z_FIXED}
+      boxShadow={"0 4px 10px rgb( 0, 0, 0, .09 )"}
+      as={"header"}
+    >
+      <Box
+        w={{ base: '95vh', md:'95vh', lg: '1200px' }}
+        display={"flex"}
+        justifyContent={"space-between"}
+        alignItems={"center"}  
+      >
+        <Box as={Link} display={"flex"} alignSelf={"center"} to={"/"}>
+          <Text as={"h1"} display={"flex"} alignItems={"center"} fontSize={H2_FONT_SIZE} fontWeight={FONT_SEMI_BOLD}>
+            my<Text as={"span"} color={FIRST_COLOR}>AnimeLib</Text>
+          </Text>
+        </Box>
+
+        <NavigationBar />
 
 				<HStack display={"flex"} justify={"space-between"}>
 					{isBase ? (
