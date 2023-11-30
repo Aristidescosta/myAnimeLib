@@ -1,0 +1,21 @@
+.x-container {
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.x-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: #101018;
+  transform-origin: center;
+}
+
+.x-line:nth-child(1) {
+  transform: rotate(45deg);
+}
+
+.x-line:nth-child(2) {
+  transform: rotate(-45deg);
+}
