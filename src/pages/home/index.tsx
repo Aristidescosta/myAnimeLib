@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, CircularProgress, useToast } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
@@ -12,45 +14,143 @@ import {
 import { useVerifyInternet } from "../../shared/states/useVerifyInternet";
 import { useDataAnime } from "../../shared/states/useAnimeRequest";
 import { useToastMessage } from "../../shared/chakra-ui-api/toast";
-import { APP_VARIANT_COLOR } from "../../shared/utils/constants";
-import jikanDB from "../../jikanDB";
-import { AnimeData } from "../../shared/types/AnimeData";
+import { APP_VARIANT_COLOR, DATA_REQUEST } from "../../shared/utils/constants";
+import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
 import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
-
-export interface IAnimeListProps {
-	slug: string;
-	title: string;
-	items: {
-		data: AnimeData[];
-		pagination: {
-			current_page: number;
-			has_next_page: boolean;
-			items: {
-				count: number;
-				total: number;
-				per_page: number;
-			};
-			last_visible_page: number;
-		};
-	};
-}
+import { AnimeService } from "../../shared/services/api/anime";
+import { useTheBounce } from "../../shared/hooks/hooks";
 
 export const Home: React.FC = () => {
 	const {
-		calculateIntervalBetweenDates,
-		setAnimeData,
-		setAnimeList,
+		addAnimeOnList,
 		animeList,
 		animeData,
+		setAnimeData,
+		calculateIntervalBetweenDates,
 	} = useDataAnime();
 	const [isLoading, setIsLoading] = useState(true);
+	const { isOnline, setIsOnline } = useVerifyInternet();
+	const toastIdRef = useRef<number | undefined>();
 
 	const { ToastStatus } = useToastMessage();
-	const { isOnline, setIsOnline } = useVerifyInternet();
 	const toast = useToast();
-	const toastIdRef = useRef<number | undefined>();
+	const { theBounce } = useTheBounce();
 	const USER_DATA: IUserFavoriteProps = getData(StorageEnum.UserData);
 	const USER_FAVORITE_DATA = USER_DATA?.favorites;
+
+	const getAnimeList = (): Promise<IAnimeListProps[] | string> => {
+		return new Promise((resolve, _) => {
+			const RESPONSE_DATA: IAnimeListProps[] = [];
+			const failedMessages: string[] = [];
+			console.log("estou sendo chamado");
+
+			// Usando Promise.all para aguardar todas as chamadas assíncronas
+			Promise.all(
+				DATA_REQUEST.map((request) => {
+					return AnimeService.getAnimeList(request.slug)
+						.then((response) => {
+							if (response instanceof Error) {
+								resolve(response.message);
+							} else {
+								RESPONSE_DATA.push({
+									...response,
+									title: request.title
+								});
+							}
+						})
+						.catch((error) => {
+							failedMessages.push(error.message);
+						});
+				})
+			).then(() => {
+				addDataOnAnimeData(RESPONSE_DATA);
+				resolve(RESPONSE_DATA);
+			});
+		});
+	};
+
+	const addDataOnAnimeData = (response: IAnimeListProps[]) => {
+		let animeDataCount = 0;
+		const ANIME_DATA: AnimeData[] = [];
+		while (animeDataCount < 4) {
+			const RANDOM_CHOISE_SLUGS = Math.floor(Math.random() * response.length);
+
+			const RANDOM_CHOISE = Math.floor(
+				Math.random() * response[RANDOM_CHOISE_SLUGS].data.length
+			);
+
+			const choice = response[RANDOM_CHOISE_SLUGS].data[RANDOM_CHOISE];
+			if (!animeData.includes(choice)) {
+				animeDataCount++;
+				ANIME_DATA.push(choice);
+			}
+		}
+		setAnimeData(ANIME_DATA);
+	};
+
+	const updateAnimeCard = (itemData: IAnimeListProps[]) => {
+		for (const result in itemData) {
+			itemData[result].data.forEach((item) => {
+				USER_FAVORITE_DATA?.forEach((favoriteData) => {
+					if (item.mal_id === favoriteData.id) {
+						item.isFavorite = true;
+					}
+				});
+			});
+		}
+		addAnimeOnList(itemData);
+	};
+
+	useEffect(() => {
+		setIsLoading(true);
+		theBounce(() => {
+			if (
+				!animeList ||
+				animeList.length === 0 ||
+				!animeData ||
+				animeData.length === 0
+			) {
+				getAnimeList()
+					.then((response) => {
+						if (typeof response === "object") {
+							addAnimeOnList(response);
+						} else {
+							toast({
+								description: response,
+								position: "top-right",
+								status: ToastStatus.ERROR,
+							});
+						}
+					})
+					.catch((error) => console.log(error))
+					.finally(() => setIsLoading(false));
+			} else {
+				const CURRENT_DATE = new Date();
+				const INTERVAL_BETWEEN_DATES =
+					calculateIntervalBetweenDates(CURRENT_DATE);
+				if (INTERVAL_BETWEEN_DATES && INTERVAL_BETWEEN_DATES.DAYS >= 1) {
+					getAnimeList()
+						.then((response) => {
+							if (typeof response === "object") {
+								addAnimeOnList(response);
+							} else {
+								toast({
+									description: response,
+									position: "top-right",
+									status: ToastStatus.ERROR,
+								});
+							}
+						})
+						.catch((error) => console.log(error))
+						.finally(() => setIsLoading(false));
+				} else {
+					setIsLoading(false);
+					updateAnimeCard(animeList);
+					addDataOnAnimeData(animeList);
+				}
+			}
+		});
+	}, []);
 
 	useEffect(() => {
 		online().then((online) => {
@@ -76,7 +176,7 @@ export const Home: React.FC = () => {
 				description: "Conexão a internet perdida",
 				status: ToastStatus.WARNING,
 				duration: 900000,
-				position: "top-right",
+				position: "bottom-left",
 			}) as number;
 		} else {
 			if (toastIdRef.current) {
@@ -89,106 +189,19 @@ export const Home: React.FC = () => {
 		}
 	}, [isOnline]);
 
-	const addDataOnAnimeData = (response: IAnimeListProps[]) => {
-		let animeDataCount = 0;
-		const ANIME_DATA: AnimeData[] = [];
-		while (animeDataCount < 4) {
-			const RANDOM_CHOISE_SLUGS = Math.floor(Math.random() * response.length);
+	console.log(animeList);
 
-			const RANDOM_CHOISE = Math.floor(
-				Math.random() * response[RANDOM_CHOISE_SLUGS].items.data.length
-			);
-
-			const choice = response[RANDOM_CHOISE_SLUGS].items.data[RANDOM_CHOISE];
-			if (!animeData.includes(choice)) {
-				animeDataCount++;
-				ANIME_DATA.push(choice);
-			}
-		}
-		setAnimeData(ANIME_DATA);
-	};
-
-	const updateAnimeCard = (itemData: IAnimeListProps[]) => {
-		for (const result in itemData) {
-			itemData[result].items.data.forEach((item) => {
-				USER_FAVORITE_DATA?.forEach((favoriteData) => {
-					if (item.mal_id === favoriteData.id) {
-						item.isFavorite = true;
-					}
-				});
-			});
-		}
-		setAnimeList(itemData);
-	};
-
-	function getAnimeList(): Promise<IAnimeListProps[]> {
-		return new Promise((resolve, reject) => {
-			jikanDB
-				.getAnimeList()
-				.then((response) => {
-					addDataOnAnimeData(response);
-					resolve(response);
-				})
-				.catch(() => {
-					reject({ message: "Ouve um erro interno" });
-				})
-				.finally(() => setIsLoading(false));
-		});
-	}
-
-	useEffect(() => {
-		setIsLoading(true);
-
-		if (
-			!animeList ||
-			animeList.length === 0 ||
-			!animeData ||
-			animeData.length === 0
-		) {
-			getAnimeList()
-				.then((response) => {
-					updateAnimeCard(response)
-				})
-				.catch((error) => {
-					toast({
-						description: error.message,
-						status: ToastStatus.ERROR,
-						position: "top-right",
-					});
-				});
-		} else {
-			const CURRENT_DATE = new Date();
-			const INTERVAL_BETWEEN_DATES =
-				calculateIntervalBetweenDates(CURRENT_DATE);
-			if (INTERVAL_BETWEEN_DATES && INTERVAL_BETWEEN_DATES.DAYS >= 1) {
-				getAnimeList()
-					.then((response) => {
-						setAnimeList(response);
-					})
-					.catch((error) => {
-						toast({
-							description: error.message,
-							status: ToastStatus.ERROR,
-							position: "top-right",
-						});
-					});
-			} else {
-				setIsLoading(false);
-				updateAnimeCard(animeList)
-				addDataOnAnimeData(animeList);
-			}
-		}
-	}, []);
 	return (
 		<>
 			{isLoading ? (
 				<Box
 					display={"flex"}
-					h={"100%"}
-					w={"100%"}
+					h={"100vh"}
+					w={"100vw"}
 					overflow={"hidden"}
 					alignItems={"center"}
 					justifyContent={"center"}
+					position={"absolute"}
 				>
 					<CircularProgress
 						value={30}
@@ -204,11 +217,7 @@ export const Home: React.FC = () => {
 						<Box as="section">
 							{animeList.length > 0 &&
 								animeList.map((item, key) => (
-									<AnimeRow
-										key={key}
-										title={item.title}
-										items={item.items.data}
-									/>
+									<AnimeRow key={key} title={item.title} items={item.data} />
 								))}
 						</Box>
 					</Box>
