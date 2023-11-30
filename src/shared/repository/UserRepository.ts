@@ -1,6 +1,6 @@
 import { AuthenticationType, TUserProps } from "../types/AuthenticationType"
 import { StorageEnum, deleteData, saveData } from "../database/LocalStorageDAO"
-import { signIn, signUp } from "../database/UserDAO"
+import { TUserData, createUserAccount, signIn, signInWithGoogle, signUp } from "../database/UserDAO"
 import { logout } from "../../firebase/Auth"
 import { COLLECTION_USERS } from "../utils/constants"
 import { getDocument } from "../../firebase/firestore"
@@ -38,13 +38,40 @@ export const createAccount = (user: TUserProps, confirmPassword: string): Promis
 	})
 }
 
-function getUserData(currentEmail: string) {
+export async function handleLoginWithGoogle() {
+	return new Promise((resolve, reject) => {
+		signInWithGoogle()
+			.then((user) => {
+				if (user.email) {
+					getUserData(user.email)
+						.then((response) => {
+							saveData(StorageEnum.Login, user.email)
+							if (response) {
+								saveData(StorageEnum.PhotoUrl, user.photoURL)
+								resolve(true)
+							} else if (user.displayName && user.email) {
+								const USER_SIGN_IN: TUserData = {
+									email: user.email,
+									name: user.displayName,
+									userName: user.displayName
+								}
+								createUserAccount(USER_SIGN_IN)
+								saveData(StorageEnum.UserData, USER_SIGN_IN)
+							}
+						}).catch(reject)
+				}
+			})
+			.catch(reject);
+	});
+}
+
+export function getUserData(currentEmail: string): Promise<TUserData | null> {
 	return new Promise((resolve, reject) => {
 		if (currentEmail) {
 			getDocument(COLLECTION_USERS, currentEmail)
 				.then(snapshot => {
 					if (snapshot.exists()) {
-						const data = snapshot.data();
+						const data = snapshot.data() as TUserData;
 						saveData(StorageEnum.UserData, data)
 						resolve(data);
 					} else {

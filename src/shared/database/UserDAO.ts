@@ -1,13 +1,13 @@
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth"
+import { User, createUserWithEmailAndPassword, getAuth } from "firebase/auth"
 
 
 import { AuthenticationType, TUserProps } from "../types/AuthenticationType"
 import { StorageEnum, saveData } from "./LocalStorageDAO"
 import { setDocument } from "../../firebase/firestore"
 import { COLLECTION_USERS } from "../utils/constants"
-import { loginWithEmailAndPassword } from "../../firebase/Auth"
+import { loginWithEmailAndPassword, loginWithGoogle } from "../../firebase/Auth"
 
-export interface TUserData extends Omit<TUserProps, "password">{}
+export interface TUserData extends Omit<TUserProps, "password"> { }
 
 export const signUp = (user: TUserProps): Promise<boolean> => {
 	return new Promise((resolve, reject) => {
@@ -15,7 +15,7 @@ export const signUp = (user: TUserProps): Promise<boolean> => {
 			const auth = getAuth()
 			createUserWithEmailAndPassword(auth, user.email, user.password)
 				.then(() => {
-					createUserAccount(user)
+					createUserAccount({ name: user.name, email: user.email, userName: user.userName })
 					saveData(StorageEnum.Login, user.email)
 					saveData(StorageEnum.UserData, { name: user.name, email: user.email, userName: user.userName })
 					resolve(true)
@@ -28,7 +28,19 @@ export const signUp = (user: TUserProps): Promise<boolean> => {
 	})
 }
 
-export const signIn = (user: AuthenticationType) =>{
+export const signInWithGoogle = (): Promise<User> => {
+	return new Promise((resolve, reject) => {
+		try {
+			loginWithGoogle()
+				.then(response => resolve(response))
+				.catch(reject)
+		} catch (error) {
+			reject
+		}
+	})
+}
+
+export const signIn = (user: AuthenticationType) => {
 	return new Promise((resolve, reject) => {
 		loginWithEmailAndPassword(user.email, user.password)
 			.then((userCredential) => {

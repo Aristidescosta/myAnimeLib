@@ -110,7 +110,7 @@ export const AuthScreen: React.FC = () => {
 			pl={"6"}
 			pr={"6"}
 			border="1px solid #DDDDDD"
-			width={windowSize.width <= sm ? "90%" : "inherit"}
+			width={windowSize.width <= sm ? "90%" : "30%"}
 			boxShadow="dark-lg"
 			textAlign={"center"}
 			position={"absolute"}
