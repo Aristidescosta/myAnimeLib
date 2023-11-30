@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Flex, LinkBox, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
-import { BsBookHalf, BsChatRightQuote, BsCollectionPlay, BsHouse, BsPeople } from 'react-icons/bs'
+import { BsBookHalf, BsBookmarkStar, BsCollectionPlay, BsHouse, BsPeople } from 'react-icons/bs'
 import { FIRST_COLOR, H2_FONT_SIZE, NAV_HEIGHT, SMALL_FONT_SIZE, TRANSPARENT_COLOR } from '../../utils/constants';
 
 
@@ -168,12 +168,12 @@ export default function NavigationBar(): JSX.Element {
 				<Box
 					fontSize={H2_FONT_SIZE}
 				>
-					<BsChatRightQuote />
+					<BsBookmarkStar />
 				</Box>
 				<Text
 					fontSize={SMALL_FONT_SIZE}
 				>
-					Ajuda
+					Favoritos
 				</Text>
 			</LinkBox>
 
