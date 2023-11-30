@@ -32,7 +32,7 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
     onOpen();
   };
 
-  const { lg, ls, md, sm, xs } = useWindowMeasure();
+  const { lg, md, sm, xl } = useWindowMeasure();
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -55,6 +55,22 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
+  const handleChangeWindowSize = (): number => {
+    if (windowSize.width <= 320) {
+      return 1;
+    } else if (windowSize.width >= 320 && windowSize.width <= sm) {
+      return 1.5;
+    } else if (windowSize.width <= md) {
+      return 2;
+    } else if (windowSize.width > md && windowSize.width <= lg) {
+      return 3;
+    } else if (windowSize.width > lg && windowSize.width <= xl) {
+      return 4;
+    } else {
+      return 6;
+    }
+  };
+
   return (
     <>
       <Box mb={30} ml={6}>
@@ -68,19 +84,7 @@ export const AnimeRow: React.FC<IAnimeRowProps> = ({ title, items }) => {
           scrollbar={{ draggable: true }}
           effect="card"
           spaceBetween={50}
-          slidesPerView={
-            windowSize.width <= xs
-              ? 1.2
-              : windowSize.width <= sm
-              ? 1.5
-              : windowSize.width <= md
-              ? 1.8
-              : windowSize.width <= lg
-              ? 3.5
-              : windowSize.width <= ls
-              ? 4.5
-              : 6
-          }
+          slidesPerView={handleChangeWindowSize()}
           style={{ padding: 30 }}
         >
           {items.map((item, key) => (

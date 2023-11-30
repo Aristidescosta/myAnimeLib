@@ -6,19 +6,31 @@ import { AnimeData } from "../types/AnimeData"
 
 
 interface IRequestProps {
-	animeList: 	{
-			slug: string;
-			title: string;
-			items: any;
-		}[]
+	animeList: {
+		slug: string;
+		title: string;
+		items: {
+			data: AnimeData[]
+			pagination: {
+				current_page: number
+				has_next_page: boolean
+				items: {
+					count: number,
+					total: number,
+					per_page: number
+				}
+				last_visible_page: number
+			}
+		};
+	}[]
 	animeData: AnimeData[]
 	type: string
 	setAnimeData: (animeData: AnimeData[]) => void
-	setAnimeList: (animeList: 	{
-			slug: string;
-			title: string;
-			items: any;
-		}[]) => void
+	setAnimeList: (animeList: {
+		slug: string;
+		title: string;
+		items: any;
+	}[]) => void
 	setType: (newType: string) => void
 	request: string,
 	setRequest: (request: string) => void
@@ -40,15 +52,15 @@ export const useDataAnime = create(
 			request: "https://api.jikan.moe/v4/seasons/now",
 			itemAnime: null,
 			createdAt: "",
-			setAnimeList: (newAnimelist: 	{
-			slug: string;
-			title: string;
-			items: any;
-		}[]) => set(state => {
+			setAnimeList: (newAnimelist: {
+				slug: string;
+				title: string;
+				items: any;
+			}[]) => set(state => {
 				state.createdAt = new Date().toISOString()
 				return ({ animeList: newAnimelist })
 			}),
-			setAnimeData: (newAnimeData: AnimeData[]) => set(() =>  ({ animeData: newAnimeData })),
+			setAnimeData: (newAnimeData: AnimeData[]) => set(() => ({ animeData: newAnimeData })),
 			setType: (newType: string) => set(() => ({ type: newType })),
 			setRequest: (request: string) => set(() => ({ request: request })),
 			setItemAnime: (newItem: AnimeData | null) => set(() => ({ itemAnime: newItem })),

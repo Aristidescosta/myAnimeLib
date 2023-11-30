@@ -34,7 +34,7 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
 }) => {
   const { setItemAnime, animeData } = useDataAnime();
 
-  const { lg, ls, md, sm, xs } = useWindowMeasure();
+  const { lg, xl, md, sm } = useWindowMeasure();
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -75,6 +75,7 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
     setAutoplay(false);
     onOpenTrailer();
   };
+
   return (
     <Box
       as="section"
@@ -111,17 +112,15 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
           >
             <Text
               fontSize={
-                windowSize.width <= xs
-                    ? 12
-                    : windowSize.width <= sm
-                    ? 16
-                    : windowSize.width <= md
-                    ? 20
-                    : windowSize.width <= lg
-                    ? 24
-                    : windowSize.width <= ls
-                    ? 26
-                    : 30
+                windowSize.width <= sm
+                  ? 16
+                  : windowSize.width <= md
+                  ? 20
+                  : windowSize.width <= lg
+                  ? 24
+                  : windowSize.width <= xl
+                  ? 26
+                  : 30
               }
               fontWeight={"bold"}
             >
@@ -129,17 +128,15 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
             </Text>
             <Box
               fontSize={
-                windowSize.width <= xs
-                    ? 12
-                    : windowSize.width <= sm
-                    ? 16
-                    : windowSize.width <= md
-                    ? 20
-                    : windowSize.width <= lg
-                    ? 24
-                    : windowSize.width <= ls
-                    ? 26
-                    : 30
+                windowSize.width <= sm
+                  ? 16
+                  : windowSize.width <= md
+                  ? 20
+                  : windowSize.width <= lg
+                  ? 24
+                  : windowSize.width <= xl
+                  ? 26
+                  : 30
               }
               fontWeight={"bold"}
               mt={15}
@@ -171,15 +168,13 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
               </Tooltip>
               <Text
                 fontSize={
-                  windowSize.width <= xs
-                    ? 12
-                    : windowSize.width <= sm
+                  windowSize.width <= sm
                     ? 16
                     : windowSize.width <= md
                     ? 20
                     : windowSize.width <= lg
                     ? 24
-                    : windowSize.width <= ls
+                    : windowSize.width <= xl
                     ? 26
                     : 30
                 }
@@ -199,30 +194,26 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
               pos={"absolute"}
               bottom={20}
               right={
-                windowSize.width <= xs
-                  ? 1.5
-                  : windowSize.width <= sm
+                windowSize.width <= sm
                   ? 2
                   : windowSize.width <= md
                   ? 3
                   : windowSize.width <= lg
                   ? 4
-                  : windowSize.width <= ls
+                  : windowSize.width <= xl
                   ? 5
                   : 6
               }
             >
               <Flex
                 fontSize={
-					windowSize.width <= xs
-                    ? 12
-                    : windowSize.width <= sm
+                  windowSize.width <= sm
                     ? 16
                     : windowSize.width <= md
                     ? 20
                     : windowSize.width <= lg
                     ? 24
-                    : windowSize.width <= ls
+                    : windowSize.width <= xl
                     ? 26
                     : 30
                 }
@@ -232,17 +223,15 @@ export const FeaturedScreen: React.FC<IFeaturedScreenProps> = ({
                   alignSelf={"flex-end"}
                   mt={-25}
                   fontSize={
-                    windowSize.width <= xs
-                    ? 12
-                    : windowSize.width <= sm
-                    ? 16
-                    : windowSize.width <= md
-                    ? 20
-                    : windowSize.width <= lg
-                    ? 24
-                    : windowSize.width <= ls
-                    ? 26
-                    : 30
+                    windowSize.width <= sm
+                      ? 16
+                      : windowSize.width <= md
+                      ? 20
+                      : windowSize.width <= lg
+                      ? 24
+                      : windowSize.width <= xl
+                      ? 26
+                      : 30
                   }
                 >
                   /0{animeData.length}

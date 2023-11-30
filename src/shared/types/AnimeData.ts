@@ -74,4 +74,5 @@ export interface AnimeData {
 	type: string;
 	url: string;
 	year: number;
+	isFavorite: boolean
 }
