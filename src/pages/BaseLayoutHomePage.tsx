@@ -1,10 +1,11 @@
 import { PropsWithChildren } from 'react'
-import { TNavbarItem } from '../shared/types/NavbarItem'
 import { Box } from '@chakra-ui/react'
+
+import { TNavbarItem } from '../shared/types/NavbarItem'
 import { Header } from '../shared/components/Header'
 
 export const BaseLayoutHomePage = (props: PropsWithChildren) => {
-	/* const NAVBAR_ITEMS: TNavbarItem[] = [
+	const NAVBAR_ITEMS: TNavbarItem[] = [
 		{
 			link: '/',
 			menu: 'Início'
@@ -21,7 +22,7 @@ export const BaseLayoutHomePage = (props: PropsWithChildren) => {
 			link: '/personagens',
 			menu: 'Personagens'
 		}
-	] */
+	]
 
 	return (
 		<Box>
