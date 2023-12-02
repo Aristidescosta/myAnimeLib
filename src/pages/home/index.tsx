@@ -19,6 +19,8 @@ import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
 import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
 import { AnimeService } from "../../shared/services/api/anime";
 import { useTheBounce } from "../../shared/hooks/hooks";
+import { AnimatedModal } from "../../shared/components/AnimatedModal";
+import { useAnimated } from "../../shared/states/useAnimatedModal";
 
 export const Home: React.FC = () => {
 	const {
@@ -31,6 +33,7 @@ export const Home: React.FC = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const { isOnline, setIsOnline } = useVerifyInternet();
 	const toastIdRef = useRef<number | undefined>();
+	const { isOpen, onClose } = useAnimated()
 
 	const { ToastStatus } = useToastMessage();
 	const toast = useToast();
@@ -198,6 +201,7 @@ export const Home: React.FC = () => {
 					display={"flex"}
 					h={"100vh"}
 					w={"100vw"}
+					m={["-20", "-96px"]}
 					overflow={"hidden"}
 					alignItems={"center"}
 					justifyContent={"center"}
@@ -225,6 +229,8 @@ export const Home: React.FC = () => {
 			) : (
 				<EmptyMessage message="Tivemos um pequeno erro interno, por favor recarrege a página!" />
 			)}
+
+			<AnimatedModal isOpen={isOpen} onClose={onClose}/>
 		</>
 	);
 };
