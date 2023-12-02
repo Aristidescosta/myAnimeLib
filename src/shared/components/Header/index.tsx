@@ -149,7 +149,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
 							</Flex>
 
 							<MenuList zIndex={99999999} color={APP_COLOR} p={0}>
-								<MenuItem as={"a"} href="/perfil">
+								<MenuItem as={"a"} href="/myAnimeLib/perfil">
 									Perfil
 								</MenuItem>
 								<MenuItem as={"button"} onClick={onLogout}>

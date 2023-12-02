@@ -32,6 +32,8 @@ const BASE_URL = "myAnimeLib"
 
 export const ROUTE_LOGIN = { route: `${BASE_URL}/entrar` }
 export const ROUTE_HOME = { route: BASE_URL }
+export const ROUTE_PERFIL = { route: `${BASE_URL}/perfil` }
+
 
 export const COLLECTION_USERS = 'users'
 
@@ -64,5 +66,28 @@ export const OPTIONS = [
 	{
 		value: "characters",
 		title: "Personagens"
+	},
+]
+
+export const PROFILE_DETAILS: {title: string, description: string}[] = [
+	{
+		title: "historioco",
+		description: "veja sua navegação"
+	},
+	{
+		title: "favoritos",
+		description: "veja seus favoritos"
+	},
+	{
+		title: "acompanhando",
+		description: "veja seus acompanhando"
+	},
+	{
+		title: "seguindo",
+		description: "veja quem estás seguindo"
+	},
+	{
+		title: "seguidores",
+		description: "veja quem te segue"
 	},
 ]
