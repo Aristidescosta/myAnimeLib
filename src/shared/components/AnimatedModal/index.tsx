@@ -2,7 +2,6 @@ import {
 	Modal,
 	ModalOverlay,
 	ModalContent,
-	ModalHeader,
 	ModalFooter,
 	ModalBody,
 	Button,
@@ -13,6 +12,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { APP_COLOR } from "../../utils/constants";
 import "./animatedStyle.css";
+import { useNavigate } from "react-router-dom";
 
 interface IAnimatedModalProps {
 	isOpen: boolean;
@@ -23,6 +23,12 @@ export const AnimatedModal: React.FC<IAnimatedModalProps> = ({
 	isOpen,
 	onClose,
 }) => {
+	const navigate = useNavigate()
+
+	const handleClickButtonLogin = () =>{
+		navigate("/myAnimeLib/entrar")
+	}
+
 	return (
 		<>
 			<Center>
@@ -53,7 +59,7 @@ export const AnimatedModal: React.FC<IAnimatedModalProps> = ({
 							<Button colorScheme="blackAlpha" mr={3} onClick={onClose}>
 								Fechar
 							</Button>
-							<Button variant="ghost" colorScheme="messenger">
+							<Button variant="ghost" colorScheme="messenger" onClick={handleClickButtonLogin}>
 								Fazer login
 							</Button>
 						</ModalFooter>
