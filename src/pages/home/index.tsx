@@ -178,8 +178,9 @@ export const Home: React.FC = () => {
 			toastIdRef.current = toast({
 				description: "Conexão a internet perdida",
 				status: ToastStatus.WARNING,
-				duration: 900000,
+				duration: 3000,
 				position: "bottom-left",
+				isClosable: true
 			}) as number;
 		} else {
 			if (toastIdRef.current) {
