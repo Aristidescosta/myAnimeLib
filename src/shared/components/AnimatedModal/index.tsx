@@ -13,6 +13,7 @@ import { motion } from "framer-motion";
 import { APP_COLOR } from "../../utils/constants";
 import "./animatedStyle.css";
 import { useNavigate } from "react-router-dom";
+import { useAnimated } from "../../states/useAnimatedModal";
 
 interface IAnimatedModalProps {
 	isOpen: boolean;
@@ -24,9 +25,11 @@ export const AnimatedModal: React.FC<IAnimatedModalProps> = ({
 	onClose,
 }) => {
 	const navigate = useNavigate()
+	const { onClose: onCloseModal } = useAnimated()
 
 	const handleClickButtonLogin = () =>{
 		navigate("/myAnimeLib/entrar")
+		onCloseModal()
 	}
 
 	return (
