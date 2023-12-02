@@ -22,10 +22,13 @@ import { APP_COLOR, APP_VARIANT_COLOR, FIRST_COLOR, FONT_SEMI_BOLD, H2_FONT_SIZE
 import { useTheBounce } from "../../hooks/hooks";
 import { SearchForm } from "../../forms/SearchForm";
 import { signOut } from "../../repository/UserRepository";
+import { TNavbarItem } from "../../types/NavbarItem";
 
+export interface INavigationBar {
+	items: TNavbarItem[]
+}
 
-
-export const Header: React.FC = () => {
+export const Header: React.FC<INavigationBar> = ({ items }) => {
 	const isBase = useBreakpointValue({ base: true, md: true, lg: false });
 	const user = getData(StorageEnum.UserData);
 	const PHOTO_URL = getData(StorageEnum.PhotoUrl);
@@ -86,7 +89,7 @@ export const Header: React.FC = () => {
           </Text>
         </Box>
 
-        <NavigationBar />
+        <NavigationBar items={items}/>
 
 				<HStack display={"flex"} justify={"space-between"}>
 					{isBase ? (
