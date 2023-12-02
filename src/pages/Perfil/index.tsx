@@ -1,25 +1,26 @@
 import {
 	Box,
 	Center,
+	Tab,
 	TabIndicator,
 	TabList,
 	TabPanel,
 	TabPanels,
 	Tabs,
+	Text,
 } from "@chakra-ui/react";
 import React from "react";
 import {
 	APP_VARIANT_COLOR,
 	PROFILE_DETAILS,
 } from "../../shared/utils/constants";
-import { TabHeader } from "./TabHeader";
 import { Historic } from "../../shared/components/Historic";
-import { AnimeCard } from "../../shared/components";
+import { AnimeRow, EmptyMessage } from "../../shared/components";
 import { useDataAnime } from "../../shared/states/useAnimeRequest";
 
-
 export const Perfil: React.FC = () => {
-	/* const {  } = useDataAnime() */
+	const { favorites } = useDataAnime();
+	console.log(favorites)
 
 	return (
 		<Box mt={24}>
@@ -27,15 +28,13 @@ export const Perfil: React.FC = () => {
 				<Center>
 					<TabList>
 						{PROFILE_DETAILS.map((profileDetail) => (
-							<TabHeader
-								key={profileDetail.title}
-								tabDescription={profileDetail.description}
-								tabTitle={profileDetail.title.toUpperCase()}
-							/>
+							<Tab>
+								<Text as={"h3"}>{profileDetail.title.toUpperCase()}</Text>
+							</Tab>
 						))}
 					</TabList>
 					<TabIndicator
-						mt="-1.5px"
+						mt={8}
 						height="2px"
 						bg={APP_VARIANT_COLOR}
 						borderRadius="1px"
@@ -46,16 +45,20 @@ export const Perfil: React.FC = () => {
 						<Historic />
 					</TabPanel>
 					<TabPanel>
-						{/* <AnimeCard > */}
+						{favorites.length > 0 ? (
+							<AnimeRow items={favorites} title="Favoritos" />
+						) : (
+							<EmptyMessage message="Ainda não tens nada aqui!" />
+						)}
 					</TabPanel>
 					<TabPanel>
-						<p>two!</p>
+						<EmptyMessage message="Ainda não tens nada aqui!" />
 					</TabPanel>
 					<TabPanel>
-						<p>two!</p>
+						<EmptyMessage message="Ainda não tens nada aqui!" />
 					</TabPanel>
 					<TabPanel>
-						<p>two!</p>
+						<EmptyMessage message="Ainda não tens nada aqui!" />
 					</TabPanel>
 				</TabPanels>
 			</Tabs>

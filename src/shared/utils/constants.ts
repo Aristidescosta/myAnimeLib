@@ -69,25 +69,20 @@ export const OPTIONS = [
 	},
 ]
 
-export const PROFILE_DETAILS: {title: string, description: string}[] = [
+export const PROFILE_DETAILS: {title: string}[] = [
 	{
 		title: "historioco",
-		description: "veja sua navegação"
 	},
 	{
 		title: "favoritos",
-		description: "veja seus favoritos"
 	},
 	{
 		title: "acompanhando",
-		description: "veja seus acompanhando"
 	},
 	{
 		title: "seguindo",
-		description: "veja quem estás seguindo"
 	},
 	{
 		title: "seguidores",
-		description: "veja quem te segue"
 	},
 ]

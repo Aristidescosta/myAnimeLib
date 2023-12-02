@@ -22,6 +22,9 @@ interface IRequestProps {
 	clearAnimeData: () => void
 	createdAt: string
 	calculateIntervalBetweenDates: (date: Date) => { DAYS: number } | void
+	favorites: AnimeData[]
+	addFavorite: (item: AnimeData) => void
+	removeFavorite: (itemId: number) => void
 }
 
 export const useDataAnime = create(
@@ -33,7 +36,28 @@ export const useDataAnime = create(
 			request: "https://api.jikan.moe/v4/seasons/now",
 			itemAnime: null,
 			createdAt: "",
+			favorites: [],
+			addFavorite: (item: AnimeData) =>{
+				set((state) => ({
+					favorites: [...state.favorites, item],
+				}))
+			},
 			addAnimeOnList: (newAnimelist: IAnimeListProps[]) => set(() => ({ animeList: newAnimelist })),
+			removeFavorite: async (itemId: number) => set((state) => {
+
+				const animeList = state.animeList
+				console.log("removendo")
+				
+				animeList.forEach(items => {
+					items.data.forEach(item => {
+						if(item.mal_id === itemId){
+							item.isFavorite = false
+						}
+					})
+					state.animeList = [...animeList, items]
+				})
+				return { favorites: state.favorites.filter((favorite) => favorite.mal_id !== itemId) }
+			}),
 			setAnimeData: (newAnimeData: AnimeData[]) => set(() => ({ animeData: newAnimeData })),
 			setType: (newType: string) => set(() => ({ type: newType })),
 			setRequest: (request: string) => set(() => ({ request: request })),
