@@ -78,7 +78,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
       as={"header"}
     >
       <Box
-        w={{ base: '95vh', md:'95vh', lg: '1200px' }}
+        w={{ base: '95vw', md:'95vw', lg: '1200px' }}
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}  
@@ -91,11 +91,12 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
 
         <NavigationBar items={items}/>
 
-				<HStack display={"flex"} justify={"space-between"}>
+				<HStack display={"flex"} justify={"space-between"} alignItems={"center"}>
 					{isBase ? (
 						<Menu>
 							<MenuButton
 								as={IconButton}
+								alignSelf={"flex-start"}
 								aria-label="Options"
 								icon={<SearchIcon />}
 								variant="outline"
