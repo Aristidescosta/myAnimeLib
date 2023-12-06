@@ -5,22 +5,22 @@ import { Box, CircularProgress, useToast } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 import online from "is-online";
 
+import { APP_VARIANT_COLOR, DATA_REQUEST } from "../../shared/utils/constants";
+import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
+import { useVerifyInternet } from "../../shared/states/useVerifyInternet";
+import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
+import { AnimatedModal } from "../../shared/components/AnimatedModal";
+import { useDataAnime } from "../../shared/states/useAnimeRequest";
+import { useAnimated } from "../../shared/states/useAnimatedModal";
+import { useToastMessage } from "../../shared/chakra-ui-api/toast";
+import { AnimeService } from "../../shared/services/api/anime";
+import { useTheBounce } from "../../shared/hooks/hooks";
 import {
 	AnimeRow,
 	EmptyMessage,
 	Featured,
 	IUserFavoriteProps,
 } from "../../shared/components";
-import { useVerifyInternet } from "../../shared/states/useVerifyInternet";
-import { useDataAnime } from "../../shared/states/useAnimeRequest";
-import { useToastMessage } from "../../shared/chakra-ui-api/toast";
-import { APP_VARIANT_COLOR, DATA_REQUEST } from "../../shared/utils/constants";
-import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
-import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
-import { AnimeService } from "../../shared/services/api/anime";
-import { useTheBounce } from "../../shared/hooks/hooks";
-import { AnimatedModal } from "../../shared/components/AnimatedModal";
-import { useAnimated } from "../../shared/states/useAnimatedModal";
 
 export const Home: React.FC = () => {
 	const {

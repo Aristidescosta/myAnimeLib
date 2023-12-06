@@ -1,4 +1,4 @@
-import { BsBookHalf, BsBookmarkStar, BsCollectionPlay, BsHouse, BsPeople } from 'react-icons/bs'
+import { BsBookHalf, BsCollectionPlay, BsHouse, BsPeople } from 'react-icons/bs'
 import { PropsWithChildren } from 'react'
 import { Box } from '@chakra-ui/react'
 
@@ -26,12 +26,12 @@ export const BaseLayoutHomePage = (props: PropsWithChildren) => {
 			icon: <BsPeople />,
 			link: '/personagens',
 			menu: 'Personagens'
-		},
+		}/* ,
 		{
 			icon: <BsBookmarkStar />,
 			link: '/favoritos',
 			menu: 'Favoritos'
-		}
+		} */
 	]
 
 	return (

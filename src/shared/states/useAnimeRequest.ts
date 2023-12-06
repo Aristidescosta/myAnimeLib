@@ -13,8 +13,6 @@ interface IRequestProps {
 	setAnimeData: (animeData: AnimeData[]) => void
 	addAnimeOnList: (animeList: IAnimeListProps[]) => void
 	setType: (newType: string) => void
-	request: string,
-	setRequest: (request: string) => void
 	itemAnime: AnimeData | null
 	setItemAnime: (newItem: AnimeData | null) => void
 	clearItem: () => void
@@ -33,34 +31,35 @@ export const useDataAnime = create(
 			animeList: [],
 			animeData: [],
 			type: "",
-			request: "https://api.jikan.moe/v4/seasons/now",
 			itemAnime: null,
 			createdAt: "",
 			favorites: [],
-			addFavorite: (item: AnimeData) =>{
+			addFavorite: (item: AnimeData) => {
 				set((state) => ({
 					favorites: [...state.favorites, item],
 				}))
 			},
 			addAnimeOnList: (newAnimelist: IAnimeListProps[]) => set(() => ({ animeList: newAnimelist })),
 			removeFavorite: async (itemId: number) => set((state) => {
-
-				const animeList = state.animeList
-				console.log("removendo")
-				
-				animeList.forEach(items => {
-					items.data.forEach(item => {
-						if(item.mal_id === itemId){
-							item.isFavorite = false
-						}
-					})
-					state.animeList = [...animeList, items]
-				})
+				const newAnimeList = state.animeList.map((items => {
+					return {
+						title: items.title,
+						data: items.data.map(item => {
+							if (item.mal_id === itemId) {
+								item.isFavorite = false
+							}
+							return item
+						}),
+						pagination: items.pagination
+					}
+				}))
+				console.log(newAnimeList)
+				console.log(state.animeList)
+				state.addAnimeOnList(newAnimeList)
 				return { favorites: state.favorites.filter((favorite) => favorite.mal_id !== itemId) }
 			}),
 			setAnimeData: (newAnimeData: AnimeData[]) => set(() => ({ animeData: newAnimeData })),
 			setType: (newType: string) => set(() => ({ type: newType })),
-			setRequest: (request: string) => set(() => ({ request: request })),
 			setItemAnime: (newItem: AnimeData | null) => set(() => ({ itemAnime: newItem })),
 			clearItem: () => set(() => ({ itemAnime: null })),
 			clearAllItems: () => set(() => ({ animeList: [] })),

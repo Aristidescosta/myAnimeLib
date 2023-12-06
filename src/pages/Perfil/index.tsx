@@ -20,7 +20,6 @@ import { useDataAnime } from "../../shared/states/useAnimeRequest";
 
 export const Perfil: React.FC = () => {
 	const { favorites } = useDataAnime();
-	console.log(favorites)
 
 	return (
 		<Box mt={24}>
