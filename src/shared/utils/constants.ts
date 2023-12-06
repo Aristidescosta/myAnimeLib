@@ -3,6 +3,7 @@ export const APP_VARIANT_COLOR = '#3ba4b1'
 export const FIRST_COLOR = '#24d0e7'
 export const TEXT_COLOR = '#FFF'
 export const TRANSPARENT_COLOR = '#1a202c23'
+export const TRANSPARENT_COLOR_SECUNDARY = '#1a202ce3'
 
 export const HEADER_HEIGHT = '3.8rem'
 export const NAV_HEIGHT = '4rem'
