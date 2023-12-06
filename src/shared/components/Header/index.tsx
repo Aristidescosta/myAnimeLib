@@ -18,7 +18,7 @@ import React, { useEffect, useState } from "react";
 import NavigationBar from "./NavgationBar";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { StorageEnum, getData } from "../../database/LocalStorageDAO";
-import { APP_COLOR, APP_VARIANT_COLOR, FIRST_COLOR, FONT_SEMI_BOLD, H2_FONT_SIZE, HEADER_HEIGHT, TRANSPARENT_COLOR, Z_FIXED } from "../../utils/constants";
+import { APP_COLOR, APP_VARIANT_COLOR, FIRST_COLOR, FONT_SEMI_BOLD, H2_FONT_SIZE, HEADER_HEIGHT, TRANSPARENT_COLOR_SECUNDARY, Z_FIXED } from "../../utils/constants";
 import { useTheBounce } from "../../hooks/hooks";
 import { SearchForm } from "../../forms/SearchForm";
 import { signOut } from "../../repository/UserRepository";
@@ -65,7 +65,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
 
   return (
     <Box 
-      backgroundColor={TRANSPARENT_COLOR} 
+      backgroundColor={TRANSPARENT_COLOR_SECUNDARY} 
       backdropFilter={"blur(4px)"} 
       position={"fixed"} 
       width={"100%"} 
@@ -78,7 +78,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
       as={"header"}
     >
       <Box
-        w={{ base: '95vh', md:'95vh', lg: '1200px' }}
+        w={{ base: '95vw', md:'95vw', lg: '1200px' }}
         display={"flex"}
         justifyContent={"space-between"}
         alignItems={"center"}  
@@ -91,11 +91,12 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
 
         <NavigationBar items={items}/>
 
-				<HStack display={"flex"} justify={"space-between"}>
+				<HStack display={"flex"} justify={"space-between"} alignItems={"center"}>
 					{isBase ? (
 						<Menu>
 							<MenuButton
 								as={IconButton}
+								alignSelf={"flex-start"}
 								aria-label="Options"
 								icon={<SearchIcon />}
 								variant="outline"

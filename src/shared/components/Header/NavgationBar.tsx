@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Flex } from "@chakra-ui/react";
 
-import { NAV_HEIGHT, TRANSPARENT_COLOR } from "../../utils/constants";
+import { NAV_HEIGHT, TRANSPARENT_COLOR_SECUNDARY } from "../../utils/constants";
 import { NavigationIcon } from "./NavigationIcon";
 import { INavigationBar } from ".";
 
@@ -16,7 +16,7 @@ export default function NavigationBar({ items }: INavigationBar): JSX.Element {
 			right={"0"}
 			left={"0"}
 			margin={"0 auto"}
-			backgroundColor={TRANSPARENT_COLOR}
+			backgroundColor={TRANSPARENT_COLOR_SECUNDARY}
 			backdropFilter={"blur(4px)"}
 			boxSizing={"border-box"}
 			padding={"0 1.8rem"}
