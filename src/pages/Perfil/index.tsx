@@ -10,13 +10,14 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import React from "react";
+
+import { useDataAnime } from "../../shared/states/useAnimeRequest";
+import { AnimeRow, EmptyMessage } from "../../shared/components";
+import { Historic } from "../../shared/components/Historic";
 import {
 	APP_VARIANT_COLOR,
 	PROFILE_DETAILS,
 } from "../../shared/utils/constants";
-import { Historic } from "../../shared/components/Historic";
-import { AnimeRow, EmptyMessage } from "../../shared/components";
-import { useDataAnime } from "../../shared/states/useAnimeRequest";
 
 export const Perfil: React.FC = () => {
 	const { favorites } = useDataAnime();

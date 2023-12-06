@@ -71,7 +71,7 @@ export const OPTIONS = [
 
 export const PROFILE_DETAILS: {title: string}[] = [
 	{
-		title: "historioco",
+		title: "histórico",
 	},
 	{
 		title: "favoritos",

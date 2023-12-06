@@ -1,7 +1,9 @@
 import React from 'react'
 
-export const Historic = () => {
+import { EmptyMessage } from '..'
+
+export const Historic: React.FC = () => {
 	return (
-		<div>Historic</div>
+		<EmptyMessage message="Ainda não tens nada aqui!" />
 	)
 }
