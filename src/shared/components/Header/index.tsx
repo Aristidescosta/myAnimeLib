@@ -83,7 +83,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
         justifyContent={"space-between"}
         alignItems={"center"}  
       >
-        <Box as={Link} display={"flex"} alignSelf={"center"} to={"/"}>
+        <Box as={Link} display={"flex"} alignSelf={"center"} to={"/myAnimeLib"}>
           <Text as={"h1"} display={"flex"} alignItems={"center"} fontSize={H2_FONT_SIZE} fontWeight={FONT_SEMI_BOLD}>
             my<Text as={"span"} color={FIRST_COLOR}>AnimeLib</Text>
           </Text>
@@ -149,7 +149,7 @@ export const Header: React.FC<INavigationBar> = ({ items }) => {
 							</Flex>
 
 							<MenuList zIndex={99999999} color={APP_COLOR} p={0}>
-								<MenuItem as={"a"} href="/perfil">
+								<MenuItem as={"a"} href="/myAnimeLib/perfil">
 									Perfil
 								</MenuItem>
 								<MenuItem as={"button"} onClick={onLogout}>

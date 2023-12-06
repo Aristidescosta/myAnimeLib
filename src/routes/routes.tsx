@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { BaseLayoutHomePage } from "../pages/BaseLayoutHomePage";
 import { ROUTE_LOGIN } from "../shared/utils/constants";
 import { Auth, Home, Search } from "../pages";
+import { Perfil } from "../pages/Perfil";
 
 
 export const AppRoute = () => {
@@ -21,6 +22,15 @@ export const AppRoute = () => {
 			element: (
 				<BaseLayoutHomePage>
 					<Search />
+				</BaseLayoutHomePage>
+			),
+			errorElement: <h1>Página de erro</h1>,
+		},
+		{
+			path: "/myAnimeLib/perfil",
+			element: (
+				<BaseLayoutHomePage>
+					<Perfil />
 				</BaseLayoutHomePage>
 			),
 			errorElement: <h1>Página de erro</h1>,

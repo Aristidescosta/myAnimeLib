@@ -5,22 +5,22 @@ import { Box, CircularProgress, useToast } from "@chakra-ui/react";
 import { useState, useEffect, useRef } from "react";
 import online from "is-online";
 
+import { APP_VARIANT_COLOR, DATA_REQUEST } from "../../shared/utils/constants";
+import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
+import { useVerifyInternet } from "../../shared/states/useVerifyInternet";
+import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
+import { AnimatedModal } from "../../shared/components/AnimatedModal";
+import { useDataAnime } from "../../shared/states/useAnimeRequest";
+import { useAnimated } from "../../shared/states/useAnimatedModal";
+import { useToastMessage } from "../../shared/chakra-ui-api/toast";
+import { AnimeService } from "../../shared/services/api/anime";
+import { useTheBounce } from "../../shared/hooks/hooks";
 import {
 	AnimeRow,
 	EmptyMessage,
 	Featured,
 	IUserFavoriteProps,
 } from "../../shared/components";
-import { useVerifyInternet } from "../../shared/states/useVerifyInternet";
-import { useDataAnime } from "../../shared/states/useAnimeRequest";
-import { useToastMessage } from "../../shared/chakra-ui-api/toast";
-import { APP_VARIANT_COLOR, DATA_REQUEST } from "../../shared/utils/constants";
-import { AnimeData, IAnimeListProps } from "../../shared/types/AnimeData";
-import { StorageEnum, getData } from "../../shared/database/LocalStorageDAO";
-import { AnimeService } from "../../shared/services/api/anime";
-import { useTheBounce } from "../../shared/hooks/hooks";
-import { AnimatedModal } from "../../shared/components/AnimatedModal";
-import { useAnimated } from "../../shared/states/useAnimatedModal";
 
 export const Home: React.FC = () => {
 	const {
@@ -29,11 +29,12 @@ export const Home: React.FC = () => {
 		animeData,
 		setAnimeData,
 		calculateIntervalBetweenDates,
+		addFavorite
 	} = useDataAnime();
 	const [isLoading, setIsLoading] = useState(true);
 	const { isOnline, setIsOnline } = useVerifyInternet();
 	const toastIdRef = useRef<number | undefined>();
-	const { isOpen, onClose } = useAnimated()
+	const { isOpen, onClose } = useAnimated();
 
 	const { ToastStatus } = useToastMessage();
 	const toast = useToast();
@@ -41,12 +42,22 @@ export const Home: React.FC = () => {
 	const USER_DATA: IUserFavoriteProps = getData(StorageEnum.UserData);
 	const USER_FAVORITE_DATA = USER_DATA?.favorites;
 
+	const updateStatusFavoriteItem = (item: AnimeData) => {
+		if (USER_DATA) {
+			const FAVORITE = USER_FAVORITE_DATA?.find(
+				(prev) => prev.id === item.mal_id
+			);
+
+			if (FAVORITE) {
+				item.isFavorite = true;
+				addFavorite(item)
+			}
+		}
+	};
+
 	const getAnimeList = (): Promise<IAnimeListProps[] | string> => {
 		return new Promise((resolve, _) => {
 			const RESPONSE_DATA: IAnimeListProps[] = [];
-			const failedMessages: string[] = [];
-			console.log("estou sendo chamado");
-
 			// Usando Promise.all para aguardar todas as chamadas assíncronas
 			Promise.all(
 				DATA_REQUEST.map((request) => {
@@ -55,14 +66,15 @@ export const Home: React.FC = () => {
 							if (response instanceof Error) {
 								resolve(response.message);
 							} else {
+								response.data.map((data) => updateStatusFavoriteItem(data));
 								RESPONSE_DATA.push({
 									...response,
-									title: request.title
+									title: request.title,
 								});
 							}
 						})
 						.catch((error) => {
-							failedMessages.push(error.message);
+							resolve(error.message)
 						});
 				})
 			).then(() => {
@@ -180,7 +192,7 @@ export const Home: React.FC = () => {
 				status: ToastStatus.WARNING,
 				duration: 3000,
 				position: "bottom-left",
-				isClosable: true
+				isClosable: true,
 			}) as number;
 		} else {
 			if (toastIdRef.current) {
@@ -192,8 +204,6 @@ export const Home: React.FC = () => {
 			}
 		}
 	}, [isOnline]);
-
-	console.log(animeList);
 
 	return (
 		<>
@@ -231,7 +241,7 @@ export const Home: React.FC = () => {
 				<EmptyMessage message="Tivemos um pequeno erro interno, por favor recarrege a página!" />
 			)}
 
-			<AnimatedModal isOpen={isOpen} onClose={onClose}/>
+			<AnimatedModal isOpen={isOpen} onClose={onClose} />
 		</>
 	);
 };
